@@ -18,7 +18,7 @@ matplotlib==3.10.3
     # via
     #   -r requirements.in
     #   seaborn
-numpy==1.26.4
+numpy==2.3.1
     # via
     #   -r requirements.in
     #   contourpy
@@ -52,16 +52,15 @@ pytz==2025.2
     # via pandas
 scikit-learn==1.7.0
     # via -r requirements.in
-scipy==1.10.1
+scipy==1.15.3
     # via
-    #   -r requirements.in
     #   scikit-learn
     #   statsmodels
 seaborn==0.13.2
     # via -r requirements.in
 six==1.17.0
     # via python-dateutil
-statsmodels==0.14.0
+statsmodels==0.14.4
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn

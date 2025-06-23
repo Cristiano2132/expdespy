@@ -1,16 +1,12 @@
 # src/expdespy/models/base.py
 
 from abc import ABC, abstractmethod
-from typing import Dict, Optional
-
-import matplotlib.axes
-import matplotlib.pyplot as plt
+from typing import Dict
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import statsmodels.formula.api as smf
 from statsmodels.stats.anova import anova_lm
-from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 
 class ExperimentalDesign(ABC):

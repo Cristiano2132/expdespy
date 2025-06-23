@@ -1,5 +1,4 @@
 import unittest
-from matplotlib import pyplot as plt
 from expdespy.datasets.dic_milho import load_dic_milho
 from expdespy.models import DIC
 

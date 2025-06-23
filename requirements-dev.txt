@@ -1,7 +1,7 @@
-ipython         # terminal
-ipdb            # debugger
-sdb             # debugger remoto
-pip-tools       # lock de dependências
+# ipython         # terminal
+# ipdb            # debugger
+# sdb             # debugger remoto
+# pip-tools       # lock de dependências
 pytest          # execução de testes
 pytest-order    # ordenação de testes
 httpx           # requests async para testes

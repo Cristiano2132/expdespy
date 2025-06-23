@@ -1,6 +1,4 @@
-# import unittest
 import unittest
-from matplotlib import pyplot as plt
 from expdespy.datasets.dbc_caprinos import load_dbc_caprinos
 from expdespy.models import DBC
 
@@ -29,26 +27,6 @@ class TestDBC(unittest.TestCase):
         self.assertIn("F", result.columns)
         self.assertIn("PR(>F)", result.columns)
         self.assertAlmostEqual(f_calc, f_calc_expected, delta=0.1)
-
-    # def test_posthoc_returns_dataframe(self):
-    #     # Act
-    #     result = self.dbc.posthoc(method="tukey")
-
-    #     # Assert
-    #     self.assertIsInstance(result, type(self.df))
-    #     self.assertIn("group1", result.columns)
-    #     self.assertIn("group2", result.columns)
-    #     self.assertIn("reject", result.columns)
-
-    # def test_plot_means_runs(self):
-    #     # Arrange
-    #     fig, ax = plt.subplots()
-
-    #     # Act & Assert
-    #     try:
-    #         self.dbc.plot_means(ax=ax)
-    #     except Exception as e:
-    #         self.fail(f"plot_means() raised an exception: {e}")
 
     def test_check_assumptions_returns_dict(self):
         # Act
