@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="expdespy",
-    version="0.1.0",
+    version="1.0.0",
     description="Statistical analysis of experimental designs in Python",
     author="Cristiano Oliveira",
     author_email="cristiano2132.ufv@gmail.com",  # opcional, substitua se quiser
@@ -30,5 +30,5 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
 )

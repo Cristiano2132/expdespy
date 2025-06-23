@@ -4,3 +4,4 @@ scikit-learn
 matplotlib
 seaborn
 numpy
+statsmodels>=0.14.0  # importante para evitar erro com scipy>=1.15

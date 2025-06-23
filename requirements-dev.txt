@@ -8,3 +8,4 @@ httpx           # requests async para testes
 black           # auto formatação
 flake8          # linter
 coverage        # relatório de cobertura de testes
+statsmodels>=0.14.0
