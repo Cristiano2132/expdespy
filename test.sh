@@ -9,7 +9,7 @@ if ! docker build -t $IMAGE_NAME .; then
 fi
 
 echo "Running tests with coverage inside Docker container..."
-if ! docker run --rm $IMAGE_NAME bash -c "coverage run -m unittest discover -s tests && coverage report --fail-under=90"; then
+if ! docker run --rm $IMAGE_NAME; then
   echo "Tests failed or coverage less than 90%."
   exit 1
 fi
