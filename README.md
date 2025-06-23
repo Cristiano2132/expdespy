@@ -101,6 +101,7 @@ MAJOR.MINOR.PATCH
 - **PATCH**: backwards compatible bug fixes
 
 Examples:
+
 - **1.0.0**: first stable release
 - **1.1.0**: added new functionality without breaking existing APIs
 - **1.1.1**: fixed a bug
