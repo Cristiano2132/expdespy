@@ -6,7 +6,7 @@ install_requires = Path("requirements.txt").read_text().splitlines()
 
 setup(
     name="expdespy",
-    version="1.0.0",
+    version="1.1.0",
     description="Statistical analysis of experimental designs in Python",
     author="Cristiano Oliveira",
     author_email="cristiano2132.ufv@gmail.com",  # opcional, substitua se quiser
