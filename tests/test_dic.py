@@ -9,7 +9,7 @@ class TestDIC(unittest.TestCase):
         # Arrange (global): carregamento dos dados e modelo
         self.df, _ = load_dic_milho()
         self.dic = DIC(data=self.df, response="produtividade",
-                       treatment="variedade")
+                    treatment="variedade")
 
     def test_anova_returns_dataframe(self):
         # Arrange

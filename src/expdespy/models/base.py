@@ -75,7 +75,7 @@ class ExperimentalDesign(ABC):
 
         return anova_table
 
-    def check_assumptions(self, alpha: float = 0.05) -> Dict[str, bool]:
+    def check_assumptions(self, alpha: float = 0.05, print_conclusions: bool = True) -> Dict[str, bool]:
         """
         Verifica os pressupostos da ANOVA:
         - Normalidade dos resíduos (teste Shapiro-Wilk)
@@ -100,19 +100,20 @@ class ExperimentalDesign(ABC):
         ]
         levene_p = stats.levene(*groups).pvalue
         is_homoscedastic = levene_p > alpha
-        print(f"""
-            Normality (Shapiro-Wilk):
-                - H0: The residuals are normally distributed
-                - H1: The residuals are not normally distributed
-            - p-value: {normality_p}
-            Conclusion: H0 must {"not be rejected" if is_normal else "be rejected"}
-            Homoscedasticity (Levene):
-                - H0: The variances of the groups are equal
-                - H1: The variances of the groups are not equal
-            - p-value: {levene_p}
-            Conclusion: H0 must {"not be rejected" if is_homoscedastic else "be rejected"}
-            """
-              )
+        if print_conclusions:
+            print(f"""
+                Normality (Shapiro-Wilk):
+                    - H0: The residuals are normally distributed
+                    - H1: The residuals are not normally distributed
+                - p-value: {normality_p}
+                Conclusion: H0 must {"not be rejected" if is_normal else "be rejected"}
+                Homoscedasticity (Levene):
+                    - H0: The variances of the groups are equal
+                    - H1: The variances of the groups are not equal
+                - p-value: {levene_p}
+                Conclusion: H0 must {"not be rejected" if is_homoscedastic else "be rejected"}
+                """
+                )
 
         return {
             "normality (Shapiro-Wilk)": {

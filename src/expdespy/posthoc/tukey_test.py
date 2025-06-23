@@ -38,7 +38,7 @@ class TukeyHSD(PostHocTest):
             columns=tukey_result._results_table.data[0]
         )
         df.columns = ['group1', 'group2', 'meandiff',
-                      'p-adj', 'lower', 'upper', 'reject']
+                    'p-adj', 'lower', 'upper', 'reject']
         return df
 
     def _pvalue_column_name(self) -> str:
