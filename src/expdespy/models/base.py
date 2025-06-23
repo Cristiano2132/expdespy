@@ -104,7 +104,7 @@ class ExperimentalDesign(ABC):
         levene_p = stats.levene(*groups).pvalue
         is_homoscedastic = levene_p > alpha
         print(f"""
-            Normality (Shapiro-Wilk): 
+            Normality (Shapiro-Wilk):
                 - H0: The residuals are normally distributed
                 - H1: The residuals are not normally distributed
             - p-value: {normality_p}
@@ -118,45 +118,16 @@ class ExperimentalDesign(ABC):
         )
 
         return {
-            "normality (Shapiro-Wilk)": is_normal,
-            "homoscedasticity (Levene)": is_homoscedastic,
+            "normality (Shapiro-Wilk)": {
+                "H0": "The residuals are normally distributed",
+                "H1": "The residuals are not normally distributed",
+                "p-value": normality_p,
+                "Conclusion": "H0 must not be rejected" if is_normal else "H0 must be rejected",
+            },
+            "homoscedasticity (Levene)":{
+                "H0": "The variances of the groups are equal",
+                "H1": "The variances of the groups are not equal",
+                "p-value": levene_p,
+                "Conclusion": "H0 must not be rejected" if is_homoscedastic else "H0 must be rejected",
+            }
         }
-
-    def posthoc(self, method: str = "tukey") -> pd.DataFrame:
-        """
-        Realiza teste post hoc para comparações múltiplas após ANOVA.
-
-        Atualmente, apenas o teste de Tukey é suportado.
-
-        Args:
-            method (str): Nome do método post hoc (default: "tukey").
-
-        Returns:
-            pd.DataFrame: Resultados do teste post hoc.
-        """
-        if method.lower() != "tukey":
-            raise NotImplementedError("Atualmente apenas o teste de Tukey é suportado.")
-        tukey = pairwise_tukeyhsd(
-            endog=self.data[self.response], groups=self.data[self.treatment], alpha=0.05
-        )
-        return pd.DataFrame(tukey.summary().data[1:], columns=tukey.summary().data[0])
-
-    def plot_means(self, ax: Optional[matplotlib.axes.Axes] = None) -> None:
-        """
-        Plota as médias da variável resposta agrupadas por tratamento.
-
-        Args:
-            ax (Optional[matplotlib.axes.Axes]): Eixo matplotlib para plotagem.
-                Se None, cria uma nova figura e eixo.
-        """
-        means = self.data.groupby(self.treatment)[self.response].mean().reset_index()
-        if ax is None:
-            fig, ax = plt.subplots(figsize=(8, 5))
-        ax.bar(means[self.treatment], means[self.response], color="skyblue")
-        ax.set_xlabel(self.treatment)
-        ax.set_ylabel(f"Média de {self.response}")
-        ax.set_title("Médias por tratamento")
-        ax.grid(True)
-        if ax is None:
-            plt.tight_layout()
-            plt.show()

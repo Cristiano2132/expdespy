@@ -26,26 +26,6 @@ class TestDIC(unittest.TestCase):
         self.assertIsInstance(f_calc, float)
         self.assertAlmostEqual(f_calc, f_calc_expected, delta=0.01)
 
-    def test_posthoc_returns_dataframe(self):
-        # Act
-        result = self.dic.posthoc(method="tukey")
-
-        # Assert
-        self.assertIsInstance(result, type(self.df))
-        self.assertIn("group1", result.columns)
-        self.assertIn("group2", result.columns)
-        self.assertIn("reject", result.columns)
-
-    def test_plot_means_runs(self):
-        # Arrange
-        fig, ax = plt.subplots()
-
-        # Act & Assert
-        try:
-            self.dic.plot_means(ax=ax)
-        except Exception as e:
-            self.fail(f"plot_means() raised an exception: {e}")
-
     def test_check_assumptions_returns_dict(self):
         # Act
         result = self.dic.check_assumptions()
