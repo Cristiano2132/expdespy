@@ -36,9 +36,9 @@ class PairwiseTTest(PostHocTest):
 
         for g1, g2 in combinations(groups, 2):
             vals1 = self.data[self.data[self.trats_column]
-                              == g1][self.values_column]
+                            == g1][self.values_column]
             vals2 = self.data[self.data[self.trats_column]
-                              == g2][self.values_column]
+                            == g2][self.values_column]
             stat, pval = stats.ttest_ind(
                 vals1, vals2, equal_var=self.equal_var)
 
