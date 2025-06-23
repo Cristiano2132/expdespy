@@ -11,10 +11,10 @@ from expdespy.utils.utils import assign_letters
 
 class PostHocTest(ABC):
     def __init__(self,
-                 data: pd.DataFrame,
-                 values_column: str,
-                 trats_column: str,
-                 alpha: float = 0.05) -> None:
+                data: pd.DataFrame,
+                values_column: str,
+                trats_column: str,
+                alpha: float = 0.05) -> None:
         self.data = data
         self.values_column = values_column
         self.trats_column = trats_column
@@ -61,8 +61,8 @@ class PostHocTest(ABC):
         return final_result
 
     def plot_compact_letters_display(self,
-                                     ax: Optional[plt.Axes] = None,
-                                     points_color: str = 'red') -> None:
+                                    ax: Optional[plt.Axes] = None,
+                                    points_color: str = 'red') -> None:
         """
         Plota um gráfico de boxplot com letras compactas do teste post hoc.
         """
