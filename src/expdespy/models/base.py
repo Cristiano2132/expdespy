@@ -1,16 +1,12 @@
 # src/expdespy/models/base.py
 
 from abc import ABC, abstractmethod
-from typing import Dict, Optional
-
-import matplotlib.axes
-import matplotlib.pyplot as plt
+from typing import Dict
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import statsmodels.formula.api as smf
 from statsmodels.stats.anova import anova_lm
-from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 
 class ExperimentalDesign(ABC):
@@ -74,7 +70,8 @@ class ExperimentalDesign(ABC):
 
         anova_table = anova_lm(model, typ=2)
         # Criar nova coluna com os símbolos
-        anova_table["Signif"] = anova_table["PR(>F)"].apply(significance_marker)
+        anova_table["Signif"] = anova_table["PR(>F)"].apply(
+            significance_marker)
 
         return anova_table
 
@@ -115,7 +112,7 @@ class ExperimentalDesign(ABC):
             - p-value: {levene_p}
             Conclusion: H0 must {"not be rejected" if is_homoscedastic else "be rejected"}
             """
-        )
+              )
 
         return {
             "normality (Shapiro-Wilk)": {
@@ -124,7 +121,7 @@ class ExperimentalDesign(ABC):
                 "p-value": normality_p,
                 "Conclusion": "H0 must not be rejected" if is_normal else "H0 must be rejected",
             },
-            "homoscedasticity (Levene)":{
+            "homoscedasticity (Levene)": {
                 "H0": "The variances of the groups are equal",
                 "H1": "The variances of the groups are not equal",
                 "p-value": levene_p,

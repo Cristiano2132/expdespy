@@ -1,6 +1,5 @@
 # src/expdespy/posthoc/tukey.py
 
-from typing import Optional
 import pandas as pd
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
@@ -12,6 +11,7 @@ class TukeyHSD(PostHocTest):
     Implementação do teste post hoc de Tukey HSD.
     Herda comportamento padrão de exibição compacta e plotagem da superclasse.
     """
+
     def __init__(
         self,
         data: pd.DataFrame,
@@ -37,7 +37,8 @@ class TukeyHSD(PostHocTest):
             tukey_result._results_table.data[1:],
             columns=tukey_result._results_table.data[0]
         )
-        df.columns = ['group1', 'group2', 'meandiff', 'p-adj', 'lower', 'upper', 'reject']
+        df.columns = ['group1', 'group2', 'meandiff',
+                      'p-adj', 'lower', 'upper', 'reject']
         return df
 
     def _pvalue_column_name(self) -> str:

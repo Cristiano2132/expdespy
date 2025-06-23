@@ -10,7 +10,8 @@ class TestTukeyHSD(unittest.TestCase):
 
     def setUp(self):
         self.df, _ = load_dic_milho()
-        self.tukey = TukeyHSD(self.df, values_column='produtividade', trats_column='variedade')
+        self.tukey = TukeyHSD(
+            self.df, values_column='produtividade', trats_column='variedade')
 
     def test_run_returns_dataframe(self):
         result = self.tukey.run()
@@ -29,7 +30,8 @@ class TestTukeyHSD(unittest.TestCase):
         try:
             self.tukey.plot_compact_letters_display(ax=ax)
         except Exception as e:
-            self.fail(f"Tukey plot_compact_letters_display() raised an exception: {e}")
+            self.fail(
+                f"Tukey plot_compact_letters_display() raised an exception: {e}")
 
     def test_cld_expected_letters(self):
         cld = self.tukey.run_compact_letters_display()
@@ -46,4 +48,3 @@ class TestTukeyHSD(unittest.TestCase):
                 expected,
                 msg=f"Letra para o grupo {group} esperada: {expected}, obtida: {actual_letters[group]}"
             )
-

@@ -4,18 +4,20 @@ from typing import Optional, Union, List
 
 
 def get_summary(df: pd.DataFrame):
-    df_summary = pd.DataFrame(columns = ['clumn_dtype', 'na', 'na_pct', 'top_class', 'top_class_pct', 'nunique', 'unique_values'])
+    df_summary = pd.DataFrame(columns=[
+                              'clumn_dtype', 'na', 'na_pct', 'top_class', 'top_class_pct', 'nunique', 'unique_values'])
     for col in df.columns:
         df_summary.at[col, 'clumn_dtype'] = df[col].dtype
         df_summary.at[col, 'na'] = df[col].isna().sum()
         na_pct = df[col].isna().sum() / len(df)*100
-        df_summary.at[col, 'na_pct'] =na_pct
-        if na_pct ==100:
+        df_summary.at[col, 'na_pct'] = na_pct
+        if na_pct == 100:
             df_summary.at[col, 'top_class'] = '...'
             df_summary.at[col, 'top_class_pct'] = '...'
         else:
             df_summary.at[col, 'top_class'] = df[col].value_counts().index[0]
-            df_summary.at[col, 'top_class_pct'] = df[col].value_counts().values[0] / len(df)*100
+            df_summary.at[col, 'top_class_pct'] = df[col].value_counts(
+            ).values[0] / len(df)*100
         df_summary.at[col, 'nunique'] = df[col].nunique()
         if df[col].nunique() < 10:
             df_summary.at[col, 'unique_values'] = df[col].unique().tolist()
@@ -77,13 +79,16 @@ def assign_letters(
 
     # Determina a ordem dos grupos
     if order is None:
-        order = sorted(set(df_post_hoc[G1].tolist() + df_post_hoc[G2].tolist()))
+        order = sorted(
+            set(df_post_hoc[G1].tolist() + df_post_hoc[G2].tolist()))
     elif isinstance(order, str) and order in ['ascending', 'descending']:
         if data is None or vals is None or group is None:
-            raise ValueError("Para ordenação por média/mediana, forneça `data`, `vals` e `group`.")
+            raise ValueError(
+                "Para ordenação por média/mediana, forneça `data`, `vals` e `group`.")
         ascending = order == 'ascending'
         data[vals] = data[vals].apply(pd.to_numeric)
-        group_stats = data.groupby(group)[vals].mean() if param else data.groupby(group)[vals].median()
+        group_stats = data.groupby(group)[vals].mean(
+        ) if param else data.groupby(group)[vals].median()
         order = group_stats.sort_values(ascending=ascending).index.tolist()
 
     # Atribuição das letras com base em significância
@@ -94,16 +99,16 @@ def assign_letters(
         for l2 in order:
             if l1 != l2 and not any([
                 is_significant(l1, l2),
-                *[is_significant(l, l2) for l in draft[i]]
+                *[is_significant(l_, l2) for l_ in draft[i]]
             ]):
                 draft[i].add(l2)
     [sets.append(s) for s in draft.values() if s not in sets]
 
     # Cria o DataFrame final com as letras
     cld = pd.DataFrame(columns=['Group', 'Letters'])
-    for i, l in enumerate(order):
-        cld.loc[i, ['Group', 'Letters']] = l, ''.join([
-            letters[j] for j, s in enumerate(sets) if l in s
+    for i, lt in enumerate(order):
+        cld.loc[i, ['Group', 'Letters']] = lt, ''.join([
+            letters[j] for j, s in enumerate(sets) if lt in s
         ])
 
     return cld.set_index('Group')

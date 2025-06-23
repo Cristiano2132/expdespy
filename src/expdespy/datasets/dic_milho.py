@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+
 def load_dic_milho() -> tuple[pd.DataFrame, str]:
     """
     Exemplo clássico de DIC (Delineamento Inteiramente Casualizado) com 4 variedades de milho
