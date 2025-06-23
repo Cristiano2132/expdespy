@@ -70,7 +70,8 @@ class ExperimentalDesign(ABC):
 
         anova_table = anova_lm(model, typ=2)
         # Criar nova coluna com os símbolos
-        anova_table["Signif"] = anova_table["PR(>F)"].apply(significance_marker)
+        anova_table["Signif"] = anova_table["PR(>F)"].apply(
+            significance_marker)
 
         return anova_table
 
@@ -111,7 +112,7 @@ class ExperimentalDesign(ABC):
             - p-value: {levene_p}
             Conclusion: H0 must {"not be rejected" if is_homoscedastic else "be rejected"}
             """
-        )
+              )
 
         return {
             "normality (Shapiro-Wilk)": {
@@ -120,7 +121,7 @@ class ExperimentalDesign(ABC):
                 "p-value": normality_p,
                 "Conclusion": "H0 must not be rejected" if is_normal else "H0 must be rejected",
             },
-            "homoscedasticity (Levene)":{
+            "homoscedasticity (Levene)": {
                 "H0": "The variances of the groups are equal",
                 "H1": "The variances of the groups are not equal",
                 "p-value": levene_p,

@@ -11,13 +11,15 @@ class PairwiseTTest(PostHocTest):
     """
     Implementa o teste t pareado entre pares de tratamentos (sem correção).
     """
+
     def __init__(
         self,
         data: pd.DataFrame,
         values_column: str,
         trats_column: str,
         alpha: float = 0.05,
-        equal_var: bool = True  # Assume variâncias iguais (padrão como no ANOVA)
+        # Assume variâncias iguais (padrão como no ANOVA)
+        equal_var: bool = True
     ) -> None:
         super().__init__(data, values_column, trats_column, alpha)
         self.equal_var = equal_var
@@ -33,9 +35,12 @@ class PairwiseTTest(PostHocTest):
         groups = self.data[self.trats_column].unique()
 
         for g1, g2 in combinations(groups, 2):
-            vals1 = self.data[self.data[self.trats_column] == g1][self.values_column]
-            vals2 = self.data[self.data[self.trats_column] == g2][self.values_column]
-            stat, pval = stats.ttest_ind(vals1, vals2, equal_var=self.equal_var)
+            vals1 = self.data[self.data[self.trats_column]
+                              == g1][self.values_column]
+            vals2 = self.data[self.data[self.trats_column]
+                              == g2][self.values_column]
+            stat, pval = stats.ttest_ind(
+                vals1, vals2, equal_var=self.equal_var)
 
             results.append({
                 "group1": g1,

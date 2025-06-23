@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+
 def load_dbc_caprinos() -> tuple[pd.DataFrame, str]:
     """
     Exemplo clássico de DBC (Delineamento em Blocos Casualizados) com 5 produtos comerciais

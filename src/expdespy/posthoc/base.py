@@ -11,10 +11,10 @@ from expdespy.utils.utils import assign_letters
 
 class PostHocTest(ABC):
     def __init__(self,
-                data: pd.DataFrame,
-                values_column: str,
-                trats_column: str,
-                alpha: float = 0.05) -> None:
+                 data: pd.DataFrame,
+                 values_column: str,
+                 trats_column: str,
+                 alpha: float = 0.05) -> None:
         self.data = data
         self.values_column = values_column
         self.trats_column = trats_column
@@ -53,15 +53,16 @@ class PostHocTest(ABC):
             group=self.trats_column
         )
 
-        means = self.data.groupby(self.trats_column)[self.values_column].mean().rename('Mean')
+        means = self.data.groupby(self.trats_column)[
+            self.values_column].mean().rename('Mean')
         final_result = pd.concat([means, cld_result], axis=1).reset_index()
         final_result.rename(columns={'index': self.trats_column}, inplace=True)
         final_result.sort_values(by='Mean', ascending=False, inplace=True)
         return final_result
 
-    def plot_compact_letters_display(self, 
-        ax: Optional[plt.Axes] = None, 
-        points_color: str = 'red') -> None:
+    def plot_compact_letters_display(self,
+                                     ax: Optional[plt.Axes] = None,
+                                     points_color: str = 'red') -> None:
         """
         Plota um gráfico de boxplot com letras compactas do teste post hoc.
         """
@@ -79,7 +80,8 @@ class PostHocTest(ABC):
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 5))
 
-        palette_blues = sns.color_palette("Blues", n_colors=len(ordered_groups))
+        palette_blues = sns.color_palette(
+            "Blues", n_colors=len(ordered_groups))
 
         sns.boxplot(
             data=self.data,

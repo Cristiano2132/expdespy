@@ -10,7 +10,8 @@ class TestPairwiseTTest(unittest.TestCase):
 
     def setUp(self):
         self.df, _ = load_dic_milho()
-        self.ttest = PairwiseTTest(self.df, values_column='produtividade', trats_column='variedade')
+        self.ttest = PairwiseTTest(
+            self.df, values_column='produtividade', trats_column='variedade')
 
     def test_run_returns_dataframe(self):
         result = self.ttest.run()
@@ -29,4 +30,5 @@ class TestPairwiseTTest(unittest.TestCase):
         try:
             self.ttest.plot_compact_letters_display(ax=ax)
         except Exception as e:
-            self.fail(f"T-test plot_compact_letters_display() raised an exception: {e}")
+            self.fail(
+                f"T-test plot_compact_letters_display() raised an exception: {e}")
