@@ -18,9 +18,15 @@ def load_dic_milho() -> tuple[pd.DataFrame, str]:
         ]
     }
     df = pd.DataFrame(data)
-    descricao = (
+    des = (
         "Experimento com 4 variedades de milho (A, B, C, D) distribuídas aleatoriamente "
         "em 20 parcelas (5 por variedade). A variável resposta é a produtividade em sacas por hectare. "
         "Usado para análise com DIC e testes de comparação múltipla."
     )
+    descricao = {
+        'description': des,
+        'source': "Fictício",
+        'response': "produtividade",
+        'trat': "variedade"
+    }
     return df, descricao

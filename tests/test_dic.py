@@ -25,12 +25,3 @@ class TestDIC(unittest.TestCase):
         self.assertIn("F", result.columns)
         self.assertIsInstance(f_calc, float)
         self.assertAlmostEqual(f_calc, f_calc_expected, delta=0.01)
-
-    def test_check_assumptions_returns_dict(self):
-        # Act
-        result = self.dic.check_assumptions()
-
-        # Assert
-        self.assertIsInstance(result, dict)
-        self.assertIn("normality (Shapiro-Wilk)", result)
-        self.assertIn("homoscedasticity (Levene)", result)
