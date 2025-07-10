@@ -86,6 +86,7 @@ def assign_letters(
             raise ValueError(
                 "Para ordenação por média/mediana, forneça `data`, `vals` e `group`.")
         ascending = order == 'ascending'
+        data = data.copy()
         data[vals] = data[vals].apply(pd.to_numeric)
         group_stats = data.groupby(group)[vals].mean(
         ) if param else data.groupby(group)[vals].median()

@@ -19,9 +19,16 @@ def load_dbc_caprinos() -> tuple[pd.DataFrame, str]:
         ]
     }
     df = pd.DataFrame(data)
-    descricao = (
+    desc = (
         "Experimento com 5 produtos comerciais fornecidos a caprinos organizados em 3 blocos "
         "de acordo com a idade. A variável resposta é a concentração de micronutrientes no sangue (ppm). "
         "Usado para análise com DBC."
     )
+    descricao = {
+        'description': desc,
+        'source': "Fictício",
+        'response': "ppm_micronutriente",
+        'trat': "produto",
+        'block': "bloco"
+    }
     return df, descricao

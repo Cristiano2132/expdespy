@@ -1,15 +1,14 @@
 import unittest
-from expdespy.datasets.dbc_caprinos import load_dbc_caprinos
-from expdespy.models import DBC
+from expdespy.datasets import load_dql_cana
+from expdespy.models import DQL
 
 
-class TestDBC(unittest.TestCase):
+class TestDQL(unittest.TestCase):
 
     def setUp(self):
         # Arrange (setup global)
-        self.df, _ = load_dbc_caprinos()
-        self.dbc = DBC(data=self.df, response="ppm_micronutriente",
-                    treatment="produto", block="bloco")
+        self.df, _ = load_dql_cana()
+        self.dql = DQL(data=self.df, response="resposta", treatment="tratamento", block_row="linha", block_col="coluna")
 
     def test_trivial_test(self):
         # Arrange, Act, Assert
@@ -17,10 +16,10 @@ class TestDBC(unittest.TestCase):
 
     def test_anova_returns_dataframe(self):
         # Arrange
-        f_calc_expected = 33.58
+        f_calc_expected = 12.09 
         # Act
-        result = self.dbc.anova()
-        f_calc = float(result.loc["C(produto)", "F"])
+        result = self.dql.anova()
+        f_calc = float(result.loc["C(tratamento)", "F"])
 
         # Assert
         self.assertIsInstance(result, type(self.df))
