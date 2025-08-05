@@ -10,6 +10,9 @@ from .base import ExperimentalDesign
 from .fatorial_base import FatorialDesign
 from .fatorial_dic import FatorialDIC
 from .fatorial_dbc import FatorialDBC
+from .splitplot_base import SplitPlotDesign
+from .splitplot_dic import SplitPlotDIC
+from .splitplot_dbc import SplitPlotDBC
 
 __all__ = ["DIC",
     "DBC",
@@ -17,5 +20,8 @@ __all__ = ["DIC",
     "DQL",
     "FatorialDesign",
     "FatorialDIC",
-    "FatorialDBC"
+    "FatorialDBC",
+    "SplitPlotDesign",
+    "SplitPlotDIC",
+    "SplitPlotDBC"
     ]
