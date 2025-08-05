@@ -10,12 +10,27 @@ from tabulate import tabulate
 from expdespy.models.base import ExperimentalDesign
 from expdespy.posthoc import PostHocLoader
 
-
 class FatorialDesign(ExperimentalDesign, ABC):
     def __init__(self, data, response: str, factors: List[str]):
-        self.factors = factors
-        treatment_formula = "*".join(factors)
-        super().__init__(data, response, treatment_formula)
+        self.original_factors = factors
+        self.data = data.copy()
+        self.factors = [self._safe_factor(f) for f in factors]
+        treatment_formula = "*".join([f"C({f})" for f in self.factors])
+        super().__init__(self.data, response, treatment_formula)
+
+    def _safe_factor(self, factor_name: str) -> str:
+        """
+        Garante que o nome do fator não entra em conflito com a sintaxe da fórmula do Patsy/statsmodels.
+        Renomeia 'C' para 'C_' e outros nomes problemáticos.
+        """
+        reserved_names = {"C"}  # Adicione mais nomes aqui se necessário
+
+        if factor_name in reserved_names and factor_name in self.data.columns:
+            new_name = factor_name + "_"
+            self.data.rename(columns={factor_name: new_name}, inplace=True)
+            return new_name
+
+        return factor_name
     
     @abstractmethod
     def _get_formula(self) -> str:
