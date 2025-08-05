@@ -73,7 +73,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="$PKG_NAME",
-    version="1.0.0",
+    version="1.5.0",
     description="Statistical analysis of experimental designs in Python",
     author="Seu Nome",
     packages=find_packages(where="src"),
