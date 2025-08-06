@@ -76,5 +76,10 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-      - name: 🚀 Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: 🚀 Publish to TestPyPI with verbose logs
+        run: |
+          python -m pip install --upgrade twine
+          twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
