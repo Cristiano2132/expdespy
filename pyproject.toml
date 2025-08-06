@@ -6,20 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "expdespy"
 version = "1.6.0"
 description = "Python package for experimental design analysis (ExpDes-like)"
+authors = [{ name="Seu Nome", email="cristiano2132.ufv@gmail.com" }]
 readme = "README.md"
-requires-python = ">=3.8"
 license = {text = "MIT"}
-
-authors = [
-    {name = "Cristiano Oliveira", email = "cristiano2132.ufv@gmail.com"}
-]
-
-maintainers = [
-    {name = "Cristiano Oliveira", email = "cristiano2132.ufv@gmail.com"}
-]
-
-keywords = ["experimental design", "ANOVA", "statistics", "ExpDes"]
-
+requires-python = ">=3.8"
 dependencies = [
     "pandas",
     "numpy",
@@ -30,32 +20,6 @@ dependencies = [
     "seaborn",
     "tabulate"
 ]
-
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Topic :: Scientific/Engineering :: Mathematics",
-    "Topic :: Scientific/Engineering :: Information Analysis"
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest",
-    "twine",
-    "build",
-    "black",
-    "ruff"
-]
-
-[project.urls]
-Repository = "https://github.com/cristiano2132/expdespy"
-
 
 [tool.setuptools.packages.find]
 where = ["src"]
