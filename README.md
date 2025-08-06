@@ -19,16 +19,26 @@ pip install .
 ```
 
 ## 🚀 Exemplo de Uso
+## Exemplo de uso
+
+Veja os exemplos completos no [notebook de demonstração](https://github.com/Cristiano2132/expdespy/blob/main/examples/expdespy_example.ipynb)
 
 ```python
-from expdespy.models import DIC
+from expdespy import DIC
+import pandas as pd
 
-# Exemplo de uso
-dic = DIC(data=df, response="yield", treatment="fertilizer")
-dic.anova()
-dic.tukey()
-dic.plot_means()
+# Exemplo com dados simulados
+dados = pd.DataFrame({
+    'trat': ['A', 'B', 'C', 'D'] * 5,
+    'resp': [20, 22, 25, 21, 19, 23, 24, 22, 20, 21, 25, 26, 27, 24, 23, 19, 20, 21, 22, 24]
+})
+
+modelo = DIC(tratamentos=dados['trat'], resposta=dados['resp'], qualitativo=True)
+modelo.anova()
+modelo.teste_posthoc(metodo='tukey', alfa=0.05)
+modelo.plot()
 ```
+
 
 ## 👨‍💻 Para Desenvolvedores
 
