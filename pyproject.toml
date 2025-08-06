@@ -11,11 +11,11 @@ requires-python = ">=3.8"
 license = {text = "MIT"}
 
 authors = [
-    {name = "Cristiano Oliveira", email = "seu@email.com"}
+    {name = "Cristiano Oliveira", email = "cristiano2132.ufv@gmail.com"}
 ]
 
 maintainers = [
-    {name = "Cristiano Oliveira", email = "seu@email.com"}
+    {name = "Cristiano Oliveira", email = "cristiano2132.ufv@gmail.com"}
 ]
 
 keywords = ["experimental design", "ANOVA", "statistics", "ExpDes"]
