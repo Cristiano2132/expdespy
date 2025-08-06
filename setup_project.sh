@@ -73,15 +73,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="$PKG_NAME",
-<<<<<<< HEAD
-    version="1.5.0",
-=======
-<<<<<<< Updated upstream
-    version="0.1.0",
-=======
-    version="11.5.1",
->>>>>>> Stashed changes
->>>>>>> develop
+    version="1.6.0",
     description="Statistical analysis of experimental designs in Python",
     author="Seu Nome",
     packages=find_packages(where="src"),
