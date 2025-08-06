@@ -77,14 +77,3 @@ pytest --cov=src
 ## 📄 Licença
 
 MIT
-
----
-
-Se quiser, posso adaptar isso também para incluir instruções sobre como contribuir ou configurar um ambiente local com `venv`. Deseja isso?
-"""
-
-path = "/mnt/data/README.md"
-with open(path, "w", encoding="utf-8") as f:
-    f.write(readme_content)
-
-path
