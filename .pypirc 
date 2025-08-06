@@ -1,8 +1,0 @@
-[distutils]
-index-servers =
-    testpypi
-
-[testpypi]
-repository: https://test.pypi.org/legacy/
-username: __token__
-password: pypi-AgENdGVzdC5weXBpLm9yZwIkYjU0OWI2NzYtY2U3MS00OTFjLTg4OTktYTdmZGIyOGQyZjk1AAIQWzEsWyJleHBkZXNweSJdXQACLFsyLFsiNDE0ZDAwMDgtOTUwNC00YTY1LThhODctNjIwNTAyNDMyMDBmIl1dAAAGIGad_CNydT2VAdUHzR4ZdAY9sFIUX4dqptt-6OH3iJXN
