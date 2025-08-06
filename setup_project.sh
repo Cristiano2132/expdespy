@@ -73,7 +73,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="$PKG_NAME",
+<<<<<<< Updated upstream
     version="0.1.0",
+=======
+    version="11.5.1",
+>>>>>>> Stashed changes
     description="Statistical analysis of experimental designs in Python",
     author="Seu Nome",
     packages=find_packages(where="src"),
