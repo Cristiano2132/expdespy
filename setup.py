@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="expdespy",
-    version="1.6.0",
+    version="2025.8.1",
     description="Statistical analysis of experimental designs in Python",
-    author="Seu Nome",
+    author="Cristiano F. Oliveira",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[

@@ -73,9 +73,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="$PKG_NAME",
-    version="1.6.0",
+    version="2025.8.1",
     description="Statistical analysis of experimental designs in Python",
-    author="Seu Nome",
+    author="Cristiano F. Oliveira",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
@@ -99,9 +99,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "$PKG_NAME"
-version = "0.1.0"
+version = "[project]
+version = "2025.8.1"  # ou qualquer valor ainda não usado"
 description = "Python package for experimental design analysis (ExpDes-like)"
-authors = [{ name="Seu Nome", email="seu@email.com" }]
+authors = [{ name="Cristiano F. Oliveira", email="cristiano2132.ufv@gmail.com" }]
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8"
