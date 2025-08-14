@@ -1,0 +1,76 @@
+import unittest
+import pandas as pd
+from expdespy.models.splitplot_base import SplitPlotDesign
+
+class DummySplitPlotDesign(SplitPlotDesign):
+    """Implementa _get_formula para testes."""
+    def _get_formula(self):
+        return f"{self.response} ~ C({self.main_plot}) * C({self.subplot})"
+
+
+class TestSplitPlotDesign(unittest.TestCase):
+
+    def setUp(self):
+        # Cenário sem interação significativa
+        self.data = pd.DataFrame({
+            "main": ["A", "A", "B", "B"] * 3,
+            "sub": ["X", "Y", "X", "Y"] * 3,
+            "y": [10, 12, 14, 16, 11, 13, 15, 17, 10, 12, 14, 16]
+        })
+        self.model = DummySplitPlotDesign(
+            data=self.data,
+            response="y",
+            main_plot="main",
+            subplot="sub"
+        )
+
+        # Cenário com interação significativa
+        self.data_interaction = pd.DataFrame({
+            "main": ["A", "A", "B", "B"] * 4,
+            "sub": ["X", "Y", "X", "Y"] * 4,
+            "y": [10, 25, 12, 30, 11, 26, 13, 29,
+                9, 24, 14, 31, 10, 27, 12, 32]
+        })
+        self.model_interaction = DummySplitPlotDesign(
+            data=self.data_interaction,
+            response="y",
+            main_plot="main",
+            subplot="sub"
+        )
+
+    def test_safe_factor_reserved_name(self):
+        df = pd.DataFrame({"C": [1, 2, 3]})
+        model = DummySplitPlotDesign(df, "C", "C", "C")
+        self.assertIn("C_", model.data.columns)
+
+    def test_safe_factor_non_reserved(self):
+        df = pd.DataFrame({"f1": [1, 2]})
+        model = DummySplitPlotDesign(df, "f1", "f1", "f1")
+        self.assertIn("f1", model.data.columns)
+
+    def test_check_assumptions_returns_dict(self):
+        result = self.model.check_assumptions(print_conclusions=False)
+        self.assertIsInstance(result, dict)
+        self.assertIn("normality (Shapiro-Wilk)", result)
+        self.assertIn("homoscedasticity (Levene)", result)
+
+    def test_run_anova_returns_dataframe(self):
+        result = self.model.run_anova()
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertIn("Signif", result.columns)
+
+    def test_unfold_interactions_without_significant(self):
+        results = self.model.unfold_interactions(print_results=False)
+        self.assertIn("anova", results)
+        self.assertIn("main_effects", results)
+
+    def test_unfold_interactions_with_significant(self):
+        results = self.model_interaction.unfold_interactions(print_results=False)
+        self.assertIn("anova", results)
+        self.assertIn("interactions", results)
+
+    def test_display_unfolded_interactions_runs(self):
+        results = self.model.unfold_interactions(print_results=False)
+        # Apenas validar que roda sem erro
+        self.model.display_unfolded_interactions(results)
+
