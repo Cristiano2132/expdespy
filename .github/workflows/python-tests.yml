@@ -38,5 +38,5 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run -m unittest discover -s tests -p "*.py"
-          coverage report --fail-under=90 --include="src/*"
+          coverage run --source=src -m unittest discover -s tests
+          coverage report --fail-under=90
