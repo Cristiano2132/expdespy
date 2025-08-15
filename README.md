@@ -83,6 +83,8 @@ pytest --cov=src
 ```
 
 ---
+## O pacote se encontra atualmente no [TestPyPI ](https://test.pypi.org/project/expdespy/)
+
 
 ## 📄 Licença
 

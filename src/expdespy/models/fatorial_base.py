@@ -10,6 +10,7 @@ from tabulate import tabulate
 from expdespy.models.base import ExperimentalDesign
 from expdespy.posthoc import PostHocLoader
 
+
 class FatorialDesign(ExperimentalDesign, ABC):
     def __init__(self, data, response: str, factors: List[str]):
         self.original_factors = factors
@@ -31,12 +32,14 @@ class FatorialDesign(ExperimentalDesign, ABC):
             return new_name
 
         return factor_name
-    
+
     @abstractmethod
     def _get_formula(self) -> str:
         pass
 
-    def check_assumptions(self, alpha: float = 0.05, print_conclusions: bool = True) -> Dict[str, bool]:
+    def check_assumptions(
+        self, alpha: float = 0.05, print_conclusions: bool = True
+    ) -> Dict[str, bool]:
         """
         Verifica os pressupostos da ANOVA para delineamentos fatoriais:
         - Normalidade dos resíduos (Shapiro-Wilk)
@@ -57,14 +60,14 @@ class FatorialDesign(ExperimentalDesign, ABC):
         is_normal = normality_p > alpha
 
         groups = [
-            group[self.response].values
-            for _, group in self.data.groupby(self.factors)
+            group[self.response].values for _, group in self.data.groupby(self.factors)
         ]
         levene_p = stats.levene(*groups).pvalue
         is_homoscedastic = levene_p > alpha
 
         if print_conclusions:
-            print(f"""
+            print(
+                f"""
     Verificação de pressupostos para delineamento fatorial:
     1. Normalidade dos resíduos (Shapiro-Wilk)
         - H0: Resíduos são normalmente distribuídos
@@ -75,7 +78,8 @@ class FatorialDesign(ExperimentalDesign, ABC):
         - H0: As variâncias são homogêneas entre os grupos
         - p-valor: {levene_p:.4f}
         - Conclusão: H0 {'não rejeitada' if is_homoscedastic else 'rejeitada'}
-            """)
+            """
+            )
 
         return {
             "normality (Shapiro-Wilk)": {
@@ -88,8 +92,10 @@ class FatorialDesign(ExperimentalDesign, ABC):
                 "H0": "As variâncias entre grupos são iguais",
                 "H1": "As variâncias entre grupos são diferentes",
                 "p-value": levene_p,
-                "Conclusion": "H0 não rejeitada" if is_homoscedastic else "H0 rejeitada",
-            }
+                "Conclusion": (
+                    "H0 não rejeitada" if is_homoscedastic else "H0 rejeitada"
+                ),
+            },
         }
 
     def run_anova(self, max_interaction: int = None) -> pd.DataFrame:
@@ -104,6 +110,7 @@ class FatorialDesign(ExperimentalDesign, ABC):
         Returns:
             pd.DataFrame: Tabela ANOVA com os termos até o nível desejado, incluindo coluna "Signif".
         """
+
         def significance_marker(p):
             if p < 0.001:
                 return "***"
@@ -135,7 +142,7 @@ class FatorialDesign(ExperimentalDesign, ABC):
         alpha: float = 0.05,
         print_results: bool = True,
         posthoc: str = "tukey",
-        max_interaction: int = None
+        max_interaction: int = None,
     ) -> Dict[str, Union[pd.DataFrame, dict]]:
         """
         Desdobra interações até certo nível e aplica testes post hoc.
@@ -157,13 +164,16 @@ class FatorialDesign(ExperimentalDesign, ABC):
         }
 
         significant_interactions = [
-            term for term in anova_table.index
+            term
+            for term in anova_table.index
             if ":" in term and anova_table.loc[term, "PR(>F)"] <= alpha
         ]
 
         if not significant_interactions:
             if print_results:
-                print("Sem interações significativas. Aplicando testes post hoc nos efeitos principais.")
+                print(
+                    "Sem interações significativas. Aplicando testes post hoc nos efeitos principais."
+                )
             for factor in self.factors:
                 try:
                     test = PostHocLoader.create(
@@ -171,7 +181,7 @@ class FatorialDesign(ExperimentalDesign, ABC):
                         data=self.data,
                         values_column=self.response,
                         trats_column=factor,
-                        alpha=alpha
+                        alpha=alpha,
                     )
                     output = test.run_compact_letters_display()
                     result["main_effects"][factor] = output
@@ -183,7 +193,9 @@ class FatorialDesign(ExperimentalDesign, ABC):
                         print(f"Erro ao aplicar post hoc ({posthoc}) em {factor}: {e}")
         else:
             if print_results:
-                print("Interações significativas encontradas. Realizando desdobramentos.")
+                print(
+                    "Interações significativas encontradas. Realizando desdobramentos."
+                )
             for term in significant_interactions:
                 factors = [f.split("(")[1].strip(")") for f in term.split(":")]
                 for f1 in factors:
@@ -194,7 +206,9 @@ class FatorialDesign(ExperimentalDesign, ABC):
                             if subset[f1].nunique() <= 1:
                                 continue
                             try:
-                                model_sub = smf.ols(f"{self.response} ~ C({f1})", data=subset).fit()
+                                model_sub = smf.ols(
+                                    f"{self.response} ~ C({f1})", data=subset
+                                ).fit()
                                 anova_sub = anova_lm(model_sub, typ=2)
 
                                 test_posthoc = PostHocLoader.create(
@@ -202,14 +216,16 @@ class FatorialDesign(ExperimentalDesign, ABC):
                                     data=subset,
                                     values_column=self.response,
                                     trats_column=f1,
-                                    alpha=alpha
+                                    alpha=alpha,
                                 )
-                                posthoc_result = test_posthoc.run_compact_letters_display()
+                                posthoc_result = (
+                                    test_posthoc.run_compact_letters_display()
+                                )
 
                                 key = f"{f1} dentro de {f2}={level}"
                                 result["interactions"][key] = {
                                     "anova": anova_sub,
-                                    "posthoc": posthoc_result
+                                    "posthoc": posthoc_result,
                                 }
 
                                 if print_results:
@@ -218,7 +234,9 @@ class FatorialDesign(ExperimentalDesign, ABC):
                                     print(posthoc_result)
                             except Exception as e:
                                 if print_results:
-                                    print(f"Erro ao desdobrar {f1} dentro de {f2}={level}: {e}")
+                                    print(
+                                        f"Erro ao desdobrar {f1} dentro de {f2}={level}: {e}"
+                                    )
 
         return result
 
@@ -230,31 +248,37 @@ class FatorialDesign(ExperimentalDesign, ABC):
         Args:
             results (dict): Saída da função `unfold_interactions`.
         """
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
         print("📊 ANOVA PRINCIPAL")
-        print("="*50)
+        print("=" * 50)
         try:
-            print(tabulate(results["anova"].round(4), headers="keys", tablefmt="pretty"))
+            print(
+                tabulate(results["anova"].round(4), headers="keys", tablefmt="pretty")
+            )
         except:
             print(results["anova"])
 
         if results.get("main_effects"):
-            print("\n" + "="*50)
+            print("\n" + "=" * 50)
             print("🧪 EFEITOS PRINCIPAIS - Post Hoc")
-            print("="*50)
+            print("=" * 50)
             for fator, letras in results["main_effects"].items():
                 print(f"\n🔹 Fator: {fator}")
                 print(letras)
 
         if results.get("interactions"):
-            print("\n" + "="*50)
+            print("\n" + "=" * 50)
             print("🔬 DESDOBRAMENTOS DE INTERAÇÕES SIGNIFICATIVAS")
-            print("="*50)
+            print("=" * 50)
             for label, blocos in results["interactions"].items():
                 print(f"\n🧩 {label}")
                 print("- ANOVA:")
                 try:
-                    print(tabulate(blocos["anova"].round(4), headers="keys", tablefmt="github"))
+                    print(
+                        tabulate(
+                            blocos["anova"].round(4), headers="keys", tablefmt="github"
+                        )
+                    )
                 except:
                     print(blocos["anova"])
                 print("\n- Post hoc:")

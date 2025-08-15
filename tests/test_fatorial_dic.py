@@ -1,8 +1,36 @@
 import unittest
 from expdespy.datasets import load_fatorial_dic_nitrogenio_fosforo
-from expdespy.models import FatorialDIC  # Ou FatorialDesignDIC, dependendo do seu nome
+from expdespy.models import FatorialDIC
+from expdespy.datasets import fatorial_dic_irrigacao
 import pandas as pd
 
+
+
+class TestFatorialDICExemploIrrigacao(unittest.TestCase):
+    def test_load_fatorial_dic(self):
+        df, description = fatorial_dic_irrigacao.load_fatorial_dic()
+
+        # Verifica se retorna um DataFrame e um dicionário
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertIsInstance(description, dict)
+
+        # Verifica colunas esperadas
+        expected_columns = ["f1", "f2", "produtividade"]
+        self.assertTrue(all(col in df.columns for col in expected_columns))
+
+        # Verifica se a resposta no description é coerente
+        self.assertEqual(description["response"], "produtividade")
+
+        # Verifica se fatores e níveis batem
+        self.assertIn("f1", description["factors"])
+        self.assertIn("f2", description["factors"])
+        self.assertEqual(set(description["levels"]["f1"].keys()), {0, 1})
+        self.assertEqual(set(description["levels"]["f2"].keys()), {0, 1})
+
+        # Verifica tamanho e valores do DataFrame
+        self.assertEqual(len(df), 12)
+        self.assertTrue((df["f1"].isin([0, 1])).all())
+        self.assertTrue((df["f2"].isin([0, 1])).all())
 
 class TestFatorialDIC(unittest.TestCase):
 

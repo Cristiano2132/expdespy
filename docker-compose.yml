@@ -9,4 +9,4 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: bash -c "coverage run -m unittest discover -s tests && coverage report --fail-under=90"
+    command: bash -c "coverage run --source=src -m unittest discover -s tests && coverage report --fail-under=90"
