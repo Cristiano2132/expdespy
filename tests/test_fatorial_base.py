@@ -72,3 +72,55 @@ class TestFatorialDesign(unittest.TestCase):
         results = self.model.unfold_interactions(print_results=False)
         # Apenas verifica se a função roda sem erros
         self.model.display_unfolded_interactions(results)
+
+
+class TestFatorialDesignExtra(unittest.TestCase):
+    def setUp(self):
+        self.data = pd.DataFrame({
+            "C": ["A", "B"] * 4,
+            "f2": ["X", "Y"] * 4,
+            "y": [10, 12, 14, 16, 11, 13, 15, 17]
+        })
+        self.model_reserved = DummyFatorialDesign(
+            data=self.data.copy(),
+            response="y",
+            factors=["C", "f2"]
+        )
+
+        self.data_interaction = pd.DataFrame({
+            "f1": ["A", "A", "B", "B"] * 4,
+            "f2": ["X", "Y", "X", "Y"] * 4,
+            "y": [10, 25, 12, 30, 9, 26, 11, 29,
+                10, 27, 13, 31, 8, 28, 12, 32]
+        })
+        self.model_interaction = DummyFatorialDesign(
+            data=self.data_interaction,
+            response="y",
+            factors=["f1", "f2"]
+        )
+
+    def test_safe_factor_reserved_name(self):
+        self.assertIn("C_", self.model_reserved.data.columns)
+
+    def test_check_assumptions_prints(self):
+        result = self.model_reserved.check_assumptions(print_conclusions=True)
+        self.assertIn("normality (Shapiro-Wilk)", result)
+
+    def test_run_anova_with_and_without_max_interaction(self):
+        df1 = self.model_reserved.run_anova(max_interaction=1)
+        df2 = self.model_reserved.run_anova(max_interaction=None)
+        self.assertIn("Signif", df1.columns)
+        self.assertIn("Signif", df2.columns)
+
+    def test_unfold_interactions_with_exception_in_posthoc(self):
+        bad_model = DummyFatorialDesign(
+            data=self.data.rename(columns={"f2": "missing"}),
+            response="y",
+            factors=["C", "missing"]
+        )
+        results = bad_model.unfold_interactions(print_results=False)
+        self.assertIn("anova", results)
+
+    def test_display_with_non_dataframe_anova(self):
+        results = {"anova": "texto simples"}
+        self.model_reserved.display_unfolded_interactions(results)

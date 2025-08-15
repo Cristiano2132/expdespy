@@ -74,3 +74,42 @@ class TestSplitPlotDesign(unittest.TestCase):
         # Apenas validar que roda sem erro
         self.model.display_unfolded_interactions(results)
 
+
+class TestSplitPlotDesignExtra(unittest.TestCase):
+    def setUp(self):
+        self.data = pd.DataFrame({
+            "C": ["A", "B"] * 4,
+            "sub": ["X", "Y"] * 4,
+            "y": [10, 12, 14, 16, 11, 13, 15, 17]
+        })
+        self.model_reserved = DummySplitPlotDesign(
+            data=self.data.copy(),
+            response="y",
+            main_plot="C",
+            subplot="sub"
+        )
+
+    def test_safe_factor_reserved_name(self):
+        self.assertIn("C_", self.model_reserved.data.columns)
+
+    def test_check_assumptions_prints(self):
+        result = self.model_reserved.check_assumptions(print_conclusions=True)
+        self.assertIn("normality (Shapiro-Wilk)", result)
+
+    def test_run_anova_returns_significance(self):
+        df = self.model_reserved.run_anova()
+        self.assertIn("Signif", df.columns)
+
+    def test_unfold_interactions_with_exception(self):
+        bad_model = DummySplitPlotDesign(
+            data=self.data.rename(columns={"sub": "missing"}),
+            response="y",
+            main_plot="C",
+            subplot="missing"
+        )
+        results = bad_model.unfold_interactions(print_results=False)
+        self.assertIn("anova", results)
+
+    def test_display_with_non_dataframe_anova(self):
+        results = {"anova": "texto simples"}
+        self.model_reserved.display_unfolded_interactions(results)
