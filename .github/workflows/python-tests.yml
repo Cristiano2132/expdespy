@@ -38,5 +38,5 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run --source=src -m unittest discover -s tests
+          coverage run --source=expdespy -m unittest discover -s tests
           coverage report --fail-under=80
