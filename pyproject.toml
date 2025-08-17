@@ -63,7 +63,7 @@ where = ["src"]
 
 [tool.coverage.run]
 branch = true
-source = ["src/expdespy"]
+source = ["expdespy"]
 
 [tool.coverage.report]
 show_missing = true
