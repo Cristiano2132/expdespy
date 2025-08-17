@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "expdespy"
-version = "2025.8.15"
+version = "2025.8.17"
 description = "Python package for experimental design analysis (ExpDes-like)"
 readme = "README.md"
 requires-python = ">=3.8"
