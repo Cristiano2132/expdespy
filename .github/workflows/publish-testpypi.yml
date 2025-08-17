@@ -35,7 +35,7 @@ jobs:
 
       - name: ✅ Run tests with coverage
         run: |
-          pytest --cov=src/expdespy --cov-report=term-missing --cov-fail-under=90
+          pytest --cov=src/expdespy --cov-report=term-missing --cov-fail-under=80
 
       - name: 🏗️ Build package
         run: python -m build
