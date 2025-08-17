@@ -60,3 +60,11 @@ Repository = "https://github.com/cristiano2132/expdespy"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/expdespy"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

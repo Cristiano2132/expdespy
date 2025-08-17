@@ -3,7 +3,7 @@
 import unittest
 import numpy as np
 import pandas as pd
-from src.expdespy.models.base import ExperimentalDesign
+from expdespy.models.base import ExperimentalDesign
 
 
 class DummyDesign(ExperimentalDesign):
