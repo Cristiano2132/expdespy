@@ -100,7 +100,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "$PKG_NAME"
 version = "[project]
-version = "2025.8.15"  # ou qualquer valor ainda não usado"
+version = "2025.8.22"  # ou qualquer valor ainda não usado"
 description = "Python package for experimental design analysis (ExpDes-like)"
 authors = [{ name="Cristiano F. Oliveira", email="cristiano2132.ufv@gmail.com" }]
 readme = "README.md"
