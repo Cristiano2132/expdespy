@@ -2,12 +2,12 @@ import unittest
 import pandas as pd
 
 from expdespy.datasets import load_splitplot_dic, load_splitplot_dbc
-from expdespy.models import SplitPlotDIC, SplitPlotDBC
+from expdespy.models import SplitPlotCRD, SplitPlotRCBD
 
-class TestSplitPlotDIC(unittest.TestCase):
+class TestSplitPlotCRD(unittest.TestCase):
     def setUp(self):
         self.df, self.desc = load_splitplot_dic()
-        self.model = SplitPlotDIC(
+        self.model = SplitPlotCRD(
             data=self.df,
             response=self.desc['response'],
             main_plot=self.desc['main_plot'],
@@ -27,10 +27,10 @@ class TestSplitPlotDIC(unittest.TestCase):
         self.assertIn("homoscedasticity (Levene)", result)
         
 
-class TestSplitPlotDBC(unittest.TestCase):
+class TestSplitPlotRCBD(unittest.TestCase):
     def setUp(self):
         self.df, self.desc = load_splitplot_dbc()
-        self.model = SplitPlotDBC(
+        self.model = SplitPlotRCBD(
             data=self.df,
             response=self.desc['response'],
             block=self.desc['block'],

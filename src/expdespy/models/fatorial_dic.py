@@ -2,7 +2,7 @@
 
 from expdespy.models.fatorial_base import FatorialDesign
 
-class FatorialDIC(FatorialDesign):
+class FactorialCRD(FatorialDesign):
     """Modelo fatorial em DIC."""
 
     def _get_formula(self):

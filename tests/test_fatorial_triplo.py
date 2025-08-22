@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 import numpy as np
-from expdespy.models import FatorialDIC
+from expdespy.models import FactorialCRD
 
 
 class TestFatorialTriploDIC(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestFatorialTriploDIC(unittest.TestCase):
         self.df = df
         self.factors = ["f1", "f2", "f3"]
         self.response = "produtividade"
-        self.model = FatorialDIC(data=self.df, response=self.response, factors=self.factors)
+        self.model = FactorialCRD(data=self.df, response=self.response, factors=self.factors)
 
     def test_anova_returns_dataframe(self):
         result = self.model.anova()

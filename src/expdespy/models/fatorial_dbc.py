@@ -2,7 +2,7 @@
 
 from expdespy.models.fatorial_base import FatorialDesign
 
-class FatorialDBC(FatorialDesign):
+class FactorialRCBD(FatorialDesign):
     def __init__(self, data, response, factors, block):
         self.block = block
         super().__init__(data, response, factors)

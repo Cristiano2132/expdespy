@@ -1,12 +1,12 @@
 import unittest
 from expdespy.datasets import load_fatorial_dic_nitrogenio_fosforo
-from expdespy.models import FatorialDIC
+from expdespy.models import FactorialCRD
 from expdespy.datasets import fatorial_dic_irrigacao
 import pandas as pd
 
 
 
-class TestFatorialDICExemploIrrigacao(unittest.TestCase):
+class TestFactorialCRDExemploIrrigacao(unittest.TestCase):
     def test_load_fatorial_dic(self):
         df, description = fatorial_dic_irrigacao.load_fatorial_dic()
 
@@ -32,14 +32,14 @@ class TestFatorialDICExemploIrrigacao(unittest.TestCase):
         self.assertTrue((df["f1"].isin([0, 1])).all())
         self.assertTrue((df["f2"].isin([0, 1])).all())
 
-class TestFatorialDIC(unittest.TestCase):
+class TestFactorialCRD(unittest.TestCase):
 
     def setUp(self):
         # Arrange
         self.df, description = load_fatorial_dic_nitrogenio_fosforo()
         factors = description.get("factors")
         response = description.get("response")
-        self.model = FatorialDIC(data=self.df, response=response, factors=factors)
+        self.model = FactorialCRD(data=self.df, response=response, factors=factors)
 
     def test_anova_returns_dataframe(self):
         # Act

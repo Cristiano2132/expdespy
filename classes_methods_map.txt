@@ -1,0 +1,146 @@
+
+Class: TukeyHSD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/posthoc/tukey_test.py)
+  Docstring: Implementação do teste post hoc de Tukey HSD.
+Herda comportamento padrão de exib...
+  Method: __init__
+  Method: run
+    Docstring: Executa o teste de Tukey HSD e retorna os resultados como um DataFrame.
+
+Returns...
+  Method: _pvalue_column_name
+    Docstring: Informa o nome da coluna de p-valor usada para a verificação de significância.
+
+...
+
+Class: PairwiseTTest (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/posthoc/t_test.py)
+  Docstring: Implementa o teste t pareado entre pares de tratamentos (sem correção).
+  Method: __init__
+  Method: run
+    Docstring: Executa o teste t para todas as comparações entre pares de tratamentos.
+
+Returns...
+  Method: _pvalue_column_name
+    Docstring: Informa o nome da coluna de p-valor a ser usada no assign_letters.
+
+Returns:
+   ...
+
+Class: PostHocLoader (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/posthoc/posthoc_loader.py)
+  Docstring: Loader: para criar instâncias de testes post hoc com base no nome.
+  Method: create
+    Docstring: Cria e retorna uma instância do teste post hoc correspondente.
+
+Args:
+    test_n...
+
+Class: PostHocTest (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/posthoc/base.py)
+  Method: __init__
+  Method: run
+    Docstring: Executa o teste post hoc e retorna um DataFrame com os resultados.
+  Method: _pvalue_column_name
+    Docstring: Retorna o nome da coluna de p-valor no DataFrame retornado por `run()`.
+  Method: run_compact_letters_display
+    Docstring: Executa o teste post hoc e retorna um DataFrame com as médias ordenadas
+e as let...
+  Method: plot_compact_letters_display
+    Docstring: Plota um gráfico de boxplot com letras compactas do teste post hoc.
+
+Class: SplitPlotRCBD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/splitplot_dbc.py)
+  Docstring: Plots subdivididas em DBC (com blocos).
+  Method: _get_formula
+
+Class: DQL (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dql.py)
+  Method: __init__
+  Method: _get_formula
+
+Class: FactorialCRD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_dic.py)
+  Docstring: Modelo fatorial em DIC.
+  Method: _get_formula
+
+Class: DBC (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dbc.py)
+  Method: __init__
+  Method: _get_formula
+
+Class: DIC (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dic.py)
+  Method: _get_formula
+
+Class: FactorialRCBD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_dbc.py)
+  Method: __init__
+  Method: _get_formula
+
+Class: SplitPlotDesign (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/splitplot_base.py)
+  Method: __init__
+  Method: _safe_factor
+    Docstring: Renomeia o fator no DataFrame caso tenha um nome reservado (ex: "C").
+
+Args:
+   ...
+  Method: _get_formula
+  Method: check_assumptions
+  Method: run_anova
+  Method: unfold_interactions
+    Docstring: Desdobra interações significativas entre parcela e subparcela.
+  Method: display_unfolded_interactions
+    Docstring: Exibe de forma organizada os resultados do desdobramento de interações.
+
+Args:
+ ...
+
+Class: SplitPlotCRD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/splitplot_dic.py)
+  Docstring: Plots subdivididas em DIC.
+  Method: _get_formula
+
+Class: FatorialDesign (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_base.py)
+  Method: __init__
+  Method: _safe_factor
+    Docstring: Garante que o nome do fator não entra em conflito com a sintaxe da fórmula do Pa...
+  Method: _get_formula
+  Method: check_assumptions
+    Docstring: Verifica os pressupostos da ANOVA para delineamentos fatoriais:
+- Normalidade do...
+  Method: run_anova
+    Docstring: Executa a ANOVA incluindo apenas interações até um certo nível
+e adiciona marcad...
+  Method: unfold_interactions
+    Docstring: Desdobra interações até certo nível e aplica testes post hoc.
+
+Args:
+    alpha (...
+  Method: display_unfolded_interactions
+    Docstring: Exibe de forma organizada os resultados do desdobramento de interações.
+
+Args:
+ ...
+
+Class: ExperimentalDesign (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/base.py)
+  Docstring: Classe base abstrata para delineamentos experimentais.
+
+Esta classe provê método...
+  Method: __init__
+  Method: _get_formula
+    Docstring: Retorna a fórmula do modelo estatístico (string).
+
+Deve ser sobrescrita por cada...
+  Method: anova
+    Docstring: Realiza a análise de variância (ANOVA) usando a fórmula
+definida pelo método `_g...
+  Method: check_assumptions
+    Docstring: Verifica os pressupostos da ANOVA:
+- Normalidade dos resíduos (Shapiro-Wilk)
+- H...
+
+Class: PolynomialRegression (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/regressao/polynomial.py)
+  Docstring: Ajuste de modelos polinomiais para tratamentos quantitativos.
+  Method: __init__
+  Method: fit
+    Docstring: Ajusta um modelo polinomial de grau especificado.
+Args:
+    degree (int): Grau d...
+  Method: anova
+    Docstring: Retorna a ANOVA do modelo ajustado.
+Returns:
+    pd.DataFrame: Resultados da ANO...
+  Method: plot
+    Docstring: Plota os pontos observados e a curva ajustada.
+Args:
+    ax (plt.Axes, optional)...

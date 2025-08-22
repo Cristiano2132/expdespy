@@ -4,7 +4,7 @@
 
 - Delineamento Inteiramente Casualizado (DIC)
 - Delineamento em Blocos Casualizados (DBC)
-- Parcelas Subdivididas
+- Plots Subdivididas
 - ANOVA
 - Verificações de pressupostos (normalidade, homogeneidade)
 - Testes pós-hoc: Tukey, Duncan, Scott-Knott

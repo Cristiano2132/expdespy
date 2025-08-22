@@ -2,13 +2,13 @@ import unittest
 import pandas as pd
 
 from expdespy.datasets import load_fatorial_rcbd_np
-from expdespy.models import FatorialDBC
+from expdespy.models import FactorialRCBD
 from statsmodels.stats.anova import anova_lm
 
 class TestFatorialRCBD(unittest.TestCase):
     def setUp(self):
         self.df, self.desc = load_fatorial_rcbd_np()
-        self.model = FatorialDBC(
+        self.model = FactorialRCBD(
             data=self.df,
             response=self.desc['response'],
             factors=self.desc['factors'],
