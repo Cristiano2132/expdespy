@@ -46,22 +46,22 @@ e as let...
     Docstring: Plota um gráfico de boxplot com letras compactas do teste post hoc.
 
 Class: SplitPlotRCBD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/splitplot_dbc.py)
-  Docstring: Plots subdivididas em DBC (com blocos).
+  Docstring: Plots subdivididas em RCBD (com blocos).
   Method: _get_formula
 
-Class: DQL (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dql.py)
+Class: LSD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dql.py)
   Method: __init__
   Method: _get_formula
 
 Class: FactorialCRD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_dic.py)
-  Docstring: Modelo fatorial em DIC.
+  Docstring: Modelo fatorial em CRD.
   Method: _get_formula
 
-Class: DBC (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dbc.py)
+Class: RCBD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dbc.py)
   Method: __init__
   Method: _get_formula
 
-Class: DIC (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dic.py)
+Class: CRD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/dic.py)
   Method: _get_formula
 
 Class: FactorialRCBD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_dbc.py)
@@ -87,10 +87,10 @@ Args:
  ...
 
 Class: SplitPlotCRD (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/splitplot_dic.py)
-  Docstring: Plots subdivididas em DIC.
+  Docstring: Plots subdivididas em CRD.
   Method: _get_formula
 
-Class: FatorialDesign (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_base.py)
+Class: FactorialDesign (File: /Users/cristianooliveira/Documents/expdespy/src/expdespy/models/fatorial_base.py)
   Method: __init__
   Method: _safe_factor
     Docstring: Garante que o nome do fator não entra em conflito com a sintaxe da fórmula do Pa...

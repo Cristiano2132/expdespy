@@ -1,6 +1,6 @@
 import unittest
 from expdespy.datasets.dic_milho import load_dic_milho
-from expdespy.models import DIC
+from expdespy.models import CRD
 
 
 class TestDIC(unittest.TestCase):
@@ -8,7 +8,7 @@ class TestDIC(unittest.TestCase):
     def setUp(self):
         # Arrange (global): carregamento dos dados e modelo
         self.df, _ = load_dic_milho()
-        self.dic = DIC(data=self.df, response="produtividade",
+        self.dic = CRD(data=self.df, response="produtividade",
                     treatment="variedade")
 
     def test_anova_returns_dataframe(self):

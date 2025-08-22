@@ -9,23 +9,22 @@ import scipy.stats as stats
 import statsmodels.formula.api as smf
 from statsmodels.stats.anova import anova_lm
 
-
 class ExperimentalDesign(ABC):
     """
-    Classe base abstrata para delineamentos experimentais.
+    Abstract base class for experimental designs.
 
-    Esta classe provê métodos comuns para análise estatística,
-    como ANOVA, verificação de pressupostos, testes post hoc e
-    visualização de médias.
+    This class provides common methods for statistical analysis,
+    such as ANOVA, assumption checking, post hoc testing, and
+    visualization of group means.
 
-    Cada delineamento específico deve herdar desta classe e
-    implementar o método abstrato `_get_formula`, que retorna
-    a fórmula estatística usada na modelagem.
+    Each specific design should inherit from this class and
+    implement the abstract method `_get_formula`, which returns
+    the statistical formula used for modeling.
 
     Attributes:
-        data (pd.DataFrame): Dados do experimento.
-        response (str): Nome da variável resposta.
-        treatment (str): Nome da coluna dos tratamentos.
+        data (pd.DataFrame): Experimental dataset.
+        response (str): Name of the response variable.
+        treatment (str): Name of the treatment column.
     """
 
     def __init__(self, data: pd.DataFrame, response: str, treatment: str):
@@ -36,23 +35,23 @@ class ExperimentalDesign(ABC):
     @abstractmethod
     def _get_formula(self) -> str:
         """
-        Retorna a fórmula do modelo estatístico (string).
+        Returns the statistical model formula.
 
-        Deve ser sobrescrita por cada subclasse para refletir o
-        delineamento específico.
+        Must be overridden by each subclass to reflect the
+        specific experimental design.
 
         Returns:
-            str: Fórmula para análise estatística.
+            str: Formula for statistical analysis.
         """
         pass
 
     def anova(self) -> pd.DataFrame:
         """
-        Realiza a análise de variância (ANOVA) usando a fórmula
-        definida pelo método `_get_formula`.
+        Performs Analysis of Variance (ANOVA) using the formula
+        defined by the `_get_formula` method.
 
         Returns:
-            pd.DataFrame: Tabela ANOVA do modelo ajustado (Tipo II).
+            pd.DataFrame: ANOVA table of the fitted model (Type II).
         """
         formula = self._get_formula()
         model = smf.ols(formula, data=self.data).fit()
@@ -70,83 +69,77 @@ class ExperimentalDesign(ABC):
                 return "ns"
 
         anova_table = anova_lm(model, typ=2)
-        # Criar nova coluna com os símbolos
-        anova_table["Signif"] = anova_table["PR(>F)"].apply(
-            significance_marker)
+        # Add significance markers
+        anova_table["Signif"] = anova_table["PR(>F)"].apply(significance_marker)
 
         return anova_table
 
     def check_assumptions(self, alpha: float = 0.05, print_conclusions: bool = True) -> Dict[str, bool]:
         """
-        Verifica os pressupostos da ANOVA:
-        - Normalidade dos resíduos (Shapiro-Wilk)
-        - Homocedasticidade (Levene)
+        Checks the assumptions of ANOVA:
+        - Normality of residuals (Shapiro-Wilk test)
+        - Homoscedasticity (Levene's test)
 
         Args:
-            alpha (float): Nível de significância. Padrão é 0.05.
-            print_conclusions (bool): Se True, imprime os resultados no console.
+            alpha (float, optional): Significance level. Default is 0.05.
+            print_conclusions (bool, optional): If True, prints the test results.
 
         Returns:
-            Dict[str, Dict]: Resultados dos testes.
+            Dict[str, Dict]: Dictionary containing the results of the tests.
         """
         formula = self._get_formula()
         model = smf.ols(formula, data=self.data).fit()
         residuals = model.resid
 
-        # Teste de normalidade dos resíduos
+        # Normality test
         normality_p = stats.shapiro(residuals).pvalue
         is_normal = normality_p > alpha
 
-        # Tentativa de agrupar por fatores existentes na fórmula
+        # Homoscedasticity test
         try:
-            # Extrai todos os fatores presentes na fórmula, removendo C() e espaços
             import re
             factor_names = re.findall(r"C\((\w+)\)", formula)
-
             if not factor_names:
                 factor_names = [self.treatment]
 
-            # Agrupar pelos fatores para o teste de Levene
             groups = [
                 group[self.response].values
                 for _, group in self.data.groupby(factor_names)
             ]
             levene_p = stats.levene(*groups).pvalue
             is_homoscedastic = levene_p > alpha
-
         except Exception as e:
             levene_p = np.nan
             is_homoscedastic = False
             if print_conclusions:
-                print(f"[ERRO ao verificar homocedasticidade]: {e}")
+                print(f"[ERROR while checking homoscedasticity]: {e}")
 
-        # Impressão opcional dos resultados
         if print_conclusions:
             print(f"""
     Normality (Shapiro-Wilk):
-        H0: The residuals are normally distributed
-        H1: The residuals are not normally distributed
+        H0: Residuals are normally distributed
+        H1: Residuals are not normally distributed
         p-value: {normality_p:.4f}
-        Conclusion: H0 must {"not be rejected" if is_normal else "be rejected"}
+        Conclusion: H0 {"not rejected" if is_normal else "rejected"}
 
     Homoscedasticity (Levene):
-        H0: The variances of the groups are equal
-        H1: The variances of the groups are not equal
+        H0: Group variances are equal
+        H1: Group variances are not equal
         p-value: {levene_p if not np.isnan(levene_p) else 'N/A'}
-        Conclusion: H0 must {"not be rejected" if is_homoscedastic else "be rejected"}
+        Conclusion: H0 {"not rejected" if is_homoscedastic else "rejected"}
     """)
 
         return {
             "normality (Shapiro-Wilk)": {
-                "H0": "The residuals are normally distributed",
-                "H1": "The residuals are not normally distributed",
+                "H0": "Residuals are normally distributed",
+                "H1": "Residuals are not normally distributed",
                 "p-value": normality_p,
-                "Conclusion": "H0 must not be rejected" if is_normal else "H0 must be rejected",
+                "Conclusion": "H0 not rejected" if is_normal else "H0 rejected",
             },
             "homoscedasticity (Levene)": {
-                "H0": "The variances of the groups are equal",
-                "H1": "The variances of the groups are not equal",
+                "H0": "Group variances are equal",
+                "H1": "Group variances are not equal",
                 "p-value": levene_p,
-                "Conclusion": "H0 must not be rejected" if is_homoscedastic else "H0 must be rejected",
+                "Conclusion": "H0 not rejected" if is_homoscedastic else "H0 rejected",
             }
         }

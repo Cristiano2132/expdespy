@@ -1,5 +1,3 @@
-# src/expdespy/posthoc/tukey.py
-
 import pandas as pd
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
@@ -8,29 +6,36 @@ from expdespy.posthoc.base import PostHocTest
 
 class TukeyHSD(PostHocTest):
     """
-    Implementação do teste post hoc de Tukey HSD.
-    Herda comportamento padrão de exibição compacta e plotagem da superclasse.
+    Implementation of the Tukey HSD post hoc test.
+    Inherits compact letter display and plotting behavior from the superclass.
     """
 
     def __init__(
         self,
         data: pd.DataFrame,
         values_column: str,
-        trats_column: str,
+        treatments_column: str,
         alpha: float = 0.05
     ) -> None:
-        super().__init__(data, values_column, trats_column, alpha)
+        super().__init__(data, values_column, treatments_column, alpha)
 
     def run(self) -> pd.DataFrame:
         """
-        Executa o teste de Tukey HSD e retorna os resultados como um DataFrame.
+        Runs the Tukey HSD test and returns the results as a DataFrame.
 
         Returns:
-            pd.DataFrame: Resultados do teste de comparações múltiplas de Tukey.
+            pd.DataFrame: Results of Tukey's multiple comparison test with columns:
+                - group1
+                - group2
+                - meandiff
+                - p-adj
+                - lower
+                - upper
+                - reject
         """
         tukey_result = pairwise_tukeyhsd(
             endog=self.data[self.values_column],
-            groups=self.data[self.trats_column].astype(str),
+            groups=self.data[self.treatments_column].astype(str),
             alpha=self.alpha
         )
         df = pd.DataFrame(
@@ -43,9 +48,9 @@ class TukeyHSD(PostHocTest):
 
     def _pvalue_column_name(self) -> str:
         """
-        Informa o nome da coluna de p-valor usada para a verificação de significância.
+        Returns the name of the p-value column used for significance testing.
 
         Returns:
-            str: Nome da coluna de p-valor ('p-adj').
+            str: "p-adj"
         """
         return "p-adj"

@@ -2,7 +2,7 @@ import pandas as pd
 
 def load_splitplot_dic():
     """
-    Carrega dados simulados para um experimento em parcelas subdivididas em DIC.
+    Carrega dados simulados para um experimento em parcelas subdivididas em CRD.
     
     Fatores:
         - Cultivar (parcela): A, B
@@ -28,7 +28,7 @@ def load_splitplot_dic():
     
     df = pd.DataFrame(data)
     desc = """
-        Experimento com parcelas subdivididas (DIC): fator principal = Cultivar, subparcela = Adubo.
+        Experimento com parcelas subdivididas (CRD): fator principal = Cultivar, subparcela = Adubo.
         3 repetições por combinação.
     """
     description = {
@@ -36,14 +36,14 @@ def load_splitplot_dic():
         'response': 'produtividade',
         'main_plot': 'cultivar',
         'subplot': 'adubo',
-        'source': 'Exemplo fictício - DIC',
+        'source': 'Exemplo fictício - CRD',
     }
     return df, description
 
 
 def load_splitplot_dbc():
     """
-    Carrega dados simulados para um experimento em parcelas subdivididas em DBC.
+    Carrega dados simulados para um experimento em parcelas subdivididas em RCBD.
     
     Fatores:
         - Cultivar (parcela): A, B
@@ -77,7 +77,7 @@ def load_splitplot_dbc():
     
     df = pd.DataFrame(data)
     desc = """
-        Experimento com parcelas subdivididas (DBC): fator principal = Cultivar, subparcela = Adubo.
+        Experimento com parcelas subdivididas (RCBD): fator principal = Cultivar, subparcela = Adubo.
         3 blocos (repetições).
     """
     description = {
@@ -86,6 +86,6 @@ def load_splitplot_dbc():
         'main_plot': 'cultivar',
         'subplot': 'adubo',
         'block': 'block',
-        'source': 'Exemplo fictício - DBC',
+        'source': 'Exemplo fictício - RCBD',
     }
     return df, description

@@ -13,14 +13,14 @@ class TestPostHocLoader(unittest.TestCase):
         })
         self.alpha = 0.05
         self.values_column = 'resp'
-        self.trats_column = 'trat'
+        self.treatments_column = 'trat'
 
     def test_create_tukey(self):
         test_instance = PostHocLoader.create(
             test_name='tukey',
             data=self.df,
             values_column=self.values_column,
-            trats_column=self.trats_column,
+            treatments_column=self.treatments_column,
             alpha=self.alpha
         )
         self.assertIsInstance(test_instance, TukeyHSD)
@@ -30,7 +30,7 @@ class TestPostHocLoader(unittest.TestCase):
             test_name='ttest',
             data=self.df,
             values_column=self.values_column,
-            trats_column=self.trats_column,
+            treatments_column=self.treatments_column,
             alpha=self.alpha
         )
         self.assertIsInstance(test_instance, PairwiseTTest)
@@ -41,7 +41,7 @@ class TestPostHocLoader(unittest.TestCase):
                 test_name='invalid',
                 data=self.df,
                 values_column=self.values_column,
-                trats_column=self.trats_column,
+                treatments_column=self.treatments_column,
                 alpha=self.alpha
             )
-        self.assertIn("não é suportado", str(context.exception))
+        self.assertIn("is not supported.", str(context.exception))

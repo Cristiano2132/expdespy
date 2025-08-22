@@ -2,8 +2,8 @@
 
 ## 📦 Funcionalidades
 
-- Delineamento Inteiramente Casualizado (DIC)
-- Delineamento em Blocos Casualizados (DBC)
+- Delineamento Inteiramente Casualizado (CRD)
+- Delineamento em Blocos Casualizados (RCBD)
 - Plots Subdivididas
 - ANOVA
 - Verificações de pressupostos (normalidade, homogeneidade)
@@ -24,7 +24,7 @@ pip install .
 Veja os exemplos completos no [notebook de demonstração](https://github.com/Cristiano2132/expdespy/blob/main/examples/expdespy_example.ipynb)
 
 ```python
-from expdespy import DIC
+from expdespy import CRD
 import pandas as pd
 
 # Exemplo com dados simulados
@@ -33,7 +33,7 @@ dados = pd.DataFrame({
     'resp': [20, 22, 25, 21, 19, 23, 24, 22, 20, 21, 25, 26, 27, 24, 23, 19, 20, 21, 22, 24]
 })
 
-modelo = DIC(tratamentos=dados['trat'], resposta=dados['resp'], qualitativo=True)
+modelo = CRD(tratamentos=dados['trat'], resposta=dados['resp'], qualitativo=True)
 modelo.anova()
 modelo.teste_posthoc(metodo='tukey', alfa=0.05)
 modelo.plot()

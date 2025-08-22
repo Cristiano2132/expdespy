@@ -1,5 +1,6 @@
 # src/expdespy/posthoc/posthoc_loader.py
 
+
 from expdespy.posthoc import TukeyHSD, PairwiseTTest
 
 POSTHOC_TESTS = {
@@ -10,7 +11,7 @@ POSTHOC_TESTS = {
 
 class PostHocLoader:
     """
-    Loader: para criar instâncias de testes post hoc com base no nome.
+    Loader class to create instances of post hoc tests based on the given name.
     """
 
     @staticmethod
@@ -18,25 +19,30 @@ class PostHocLoader:
         test_name: str,
         data,
         values_column: str,
-        trats_column: str,
+        treatments_column: str,
         alpha: float = 0.05,
     ):
         """
-        Cria e retorna uma instância do teste post hoc correspondente.
+        Create and return an instance of the corresponding post hoc test.
 
         Args:
-            test_name (str): Nome do teste ("tukey" or "ttest").
-            data (pd.DataFrame): DataFrame com os dados.
-            values_column (str): Nome da coluna com os valores/resposta.
-            trats_column (str): Nome da coluna com os tratamentos/grupos.
-            alpha (float): Nível de significância.
+            test_name (str): Name of the test ("tukey" or "ttest").
+            data (pd.DataFrame): DataFrame containing the experimental data.
+            values_column (str): Name of the column with response values.
+            treatments_column (str): Name of the column with treatments/groups.
+            alpha (float): Significance level. Default is 0.05.
 
         Returns:
-            Instância de uma subclasse de PostHocTest.
+            PostHocTest: An instance of a PostHocTest subclass.
         """
         test_name = test_name.lower()
         if test_name not in POSTHOC_TESTS:
-            raise ValueError(f"Teste post hoc '{test_name}' não é suportado.")
+            raise ValueError(f"Post hoc test '{test_name}' is not supported.")
 
         test_class = POSTHOC_TESTS[test_name]
-        return test_class(data=data, values_column=values_column, trats_column=trats_column, alpha=alpha)
+        return test_class(
+            data=data,
+            values_column=values_column,
+            treatments_column=treatments_column,
+            alpha=alpha
+        )

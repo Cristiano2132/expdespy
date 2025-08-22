@@ -11,7 +11,7 @@ class TestTukeyHSD(unittest.TestCase):
     def setUp(self):
         self.df, _ = load_dic_milho()
         self.tukey = TukeyHSD(
-            self.df, values_column='produtividade', trats_column='variedade')
+            self.df, values_column='produtividade', treatments_column='variedade')
 
     def test_run_returns_dataframe(self):
         result = self.tukey.run()

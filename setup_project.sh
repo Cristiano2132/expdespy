@@ -38,8 +38,8 @@ cat <<EOF > README.md
 
 ## Features
 
-- Completely Randomized Design (DIC)
-- Randomized Block Design (DBC)
+- Completely Randomized Design (CRD)
+- Randomized Block Design (RCBD)
 - Split-Plot Design
 - ANOVA
 - Assumption checks
@@ -55,8 +55,8 @@ pip install .
 ## Usage
 
 \`\`\`python
-from $PKG_NAME.models import DIC
-dic = DIC(data=df, response="yield", treatment="fertilizer")
+from $PKG_NAME.models import CRD
+dic = CRD(data=df, response="yield", treatment="fertilizer")
 dic.anova()
 dic.tukey()
 dic.plot_means()

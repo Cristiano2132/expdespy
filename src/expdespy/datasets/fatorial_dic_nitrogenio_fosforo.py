@@ -5,7 +5,7 @@ import pandas as pd
 
 def load_fatorial_dic_nitrogenio_fosforo():
     """
-    Carrega dados de experimento fatorial em DIC com dois fatores:
+    Carrega dados de experimento fatorial em CRD com dois fatores:
     Nitrogênio (f1) e Fósforo (f2), ambos com dois níveis (0 = dose baixa, 1 = dose alta),
     com 5 repetições por combinação.
 
@@ -25,7 +25,7 @@ def load_fatorial_dic_nitrogenio_fosforo():
 
     description = {
         'description': """
-            Dados de experimento fatorial em DIC com dois fatores:
+            Dados de experimento fatorial em CRD com dois fatores:
             Nitrogênio (f1) e Fósforo (f2), ambos com dois níveis (0 = dose baixa, 1 = dose alta),
             com 5 repetições por combinação.
         """,

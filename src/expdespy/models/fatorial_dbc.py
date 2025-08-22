@@ -1,8 +1,8 @@
 # src/expdespy/models/fatorial_dbc.py
 
-from expdespy.models.fatorial_base import FatorialDesign
+from expdespy.models.fatorial_base import FactorialDesign
 
-class FactorialRCBD(FatorialDesign):
+class FactorialRCBD(FactorialDesign):
     def __init__(self, data, response, factors, block):
         self.block = block
         super().__init__(data, response, factors)

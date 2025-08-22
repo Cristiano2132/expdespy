@@ -1,6 +1,6 @@
 import unittest
 from expdespy.datasets.dbc_caprinos import load_dbc_caprinos
-from expdespy.models import DBC
+from expdespy.models import RCBD
 
 
 class TestDBC(unittest.TestCase):
@@ -8,7 +8,7 @@ class TestDBC(unittest.TestCase):
     def setUp(self):
         # Arrange (setup global)
         self.df, _ = load_dbc_caprinos()
-        self.dbc = DBC(data=self.df, response="ppm_micronutriente",
+        self.dbc = RCBD(data=self.df, response="ppm_micronutriente",
                     treatment="produto", block="bloco")
 
     def test_trivial_test(self):

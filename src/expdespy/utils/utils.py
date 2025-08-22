@@ -5,7 +5,7 @@ from typing import Optional, Union, List
 
 def get_summary(df: pd.DataFrame):
     df_summary = pd.DataFrame(columns=[
-                              'clumn_dtype', 'na', 'na_pct', 'top_class', 'top_class_pct', 'nunique', 'unique_values'])
+                            'clumn_dtype', 'na', 'na_pct', 'top_class', 'top_class_pct', 'nunique', 'unique_values'])
     for col in df.columns:
         df_summary.at[col, 'clumn_dtype'] = df[col].dtype
         df_summary.at[col, 'na'] = df[col].isna().sum()

@@ -5,7 +5,7 @@ import pandas as pd
 
 def load_dbc_caprinos() -> tuple[pd.DataFrame, str]:
     """
-    Exemplo clássico de DBC (Delineamento em Blocos Casualizados) com 5 produtos comerciais
+    Exemplo clássico de RCBD (Delineamento em Blocos Casualizados) com 5 produtos comerciais
     aplicados a grupos de caprinos separados em 3 blocos por faixa etária. A variável resposta
     é a concentração de micronutrientes no sangue (ppm).
     """
@@ -22,7 +22,7 @@ def load_dbc_caprinos() -> tuple[pd.DataFrame, str]:
     desc = (
         "Experimento com 5 produtos comerciais fornecidos a caprinos organizados em 3 blocos "
         "de acordo com a idade. A variável resposta é a concentração de micronutrientes no sangue (ppm). "
-        "Usado para análise com DBC."
+        "Usado para análise com RCBD."
     )
     descricao = {
         'description': desc,

@@ -1,6 +1,6 @@
 import unittest
 from expdespy.datasets import load_dql_cana
-from expdespy.models import DQL
+from expdespy.models import LSD
 
 
 class TestDQL(unittest.TestCase):
@@ -8,7 +8,7 @@ class TestDQL(unittest.TestCase):
     def setUp(self):
         # Arrange (setup global)
         self.df, _ = load_dql_cana()
-        self.dql = DQL(data=self.df, response="resposta", treatment="tratamento", block_row="linha", block_col="coluna")
+        self.dql = LSD(data=self.df, response="resposta", treatment="tratamento", block_row="linha", block_col="coluna")
 
     def test_trivial_test(self):
         # Arrange, Act, Assert

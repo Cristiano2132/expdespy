@@ -5,7 +5,7 @@ import pandas as pd
 
 def load_fatorial_dic():
     """
-    Carrega dados do experimento fatorial em DIC com dois fatores:
+    Carrega dados do experimento fatorial em CRD com dois fatores:
     Irrigação (f1) e Calagem (f2), ambos com dois níveis (0 = ausência, 1 = presença).
     
     Retorna:
@@ -20,7 +20,7 @@ def load_fatorial_dic():
         ]
     }
     description = {'description': """
-        Dados de um experimento fatorial em DIC com dois fatores:
+        Dados de um experimento fatorial em CRD com dois fatores:
         Irrigação (f1) e Calagem (f2), ambos com dois níveis (0 = ausência, 1 = presença).
     """,
                 'source': "Fictício",

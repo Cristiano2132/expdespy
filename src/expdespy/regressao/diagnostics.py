@@ -1,5 +1,4 @@
 # src/expdespy/utils/diagnostics.py
-
 import numpy as np
 import seaborn as sns
 import statsmodels.api as sm
@@ -8,14 +7,17 @@ from statsmodels.stats.stattools import durbin_watson
 from scipy import stats
 from matplotlib import pyplot as plt
 
+
 def plot_residuals_vs_fitted(model: sm.regression.linear_model.RegressionResultsWrapper, ax: plt.Axes = None) -> plt.Axes:
     """
-    Plota Resíduos vs Valores Ajustados para verificar homocedasticidade.
+    Plot Residuals vs Fitted values to check for homoscedasticity.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
-        ax (plt.Axes, optional): Eixos em que plotar. Se None, cria novos eixos.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+        ax (plt.Axes, optional): Axes object to plot on. If None, creates a new one.
+
     Returns:
-        plt.Axes: Eixos em que o gráfico foi plotado.
+        plt.Axes: The axes with the plotted graph.
     """
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5))
@@ -33,12 +35,14 @@ def plot_residuals_vs_fitted(model: sm.regression.linear_model.RegressionResults
 
 def qq_plot_residuals(model: sm.regression.linear_model.RegressionResultsWrapper, ax: plt.Axes = None) -> plt.Axes:
     """
-    Plota o QQ-plot dos resíduos para verificar normalidade.
+    Plot the QQ-plot of residuals to check normality.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
-        ax (plt.Axes, optional): Eixos em que plotar. Se None, cria novos eixos.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+        ax (plt.Axes, optional): Axes object to plot on. If None, creates a new one.
+
     Returns:
-        plt.Axes: Eixos em que o gráfico foi plotado.
+        plt.Axes: The axes with the plotted graph.
     """
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5))
@@ -51,13 +55,14 @@ def qq_plot_residuals(model: sm.regression.linear_model.RegressionResultsWrapper
 
 def plot_residual_hist(model: sm.regression.linear_model.RegressionResultsWrapper, ax: plt.Axes = None) -> plt.Axes:
     """
-    Plota histograma e KDE dos resíduos.
+    Plot histogram and KDE of residuals.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
-        ax (plt.Axes, optional): Eixos em que plotar. Se None, cria novos eixos.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+        ax (plt.Axes, optional): Axes object to plot on. If None, creates a new one.
 
     Returns:
-        plt.Axes: Eixos em que o gráfico foi plotado.
+        plt.Axes: The axes with the plotted graph.
     """
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5))
@@ -71,13 +76,14 @@ def plot_residual_hist(model: sm.regression.linear_model.RegressionResultsWrappe
 
 def cooks_distance_plot(model: sm.regression.linear_model.RegressionResultsWrapper, ax: plt.Axes = None) -> plt.Axes:
     """
-    Plota a distância de Cook para identificar pontos influentes.
+    Plot Cook's Distance to identify influential observations.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
-        ax (plt.Axes, optional): Eixos em que plotar. Se None, cria novos eixos.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+        ax (plt.Axes, optional): Axes object to plot on. If None, creates a new one.
 
     Returns:
-        plt.Axes: Eixos em que o gráfico foi plotado.
+        plt.Axes: The axes with the plotted graph.
     """
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5))
@@ -95,31 +101,31 @@ def cooks_distance_plot(model: sm.regression.linear_model.RegressionResultsWrapp
 
 def shapiro_test(model: sm.regression.linear_model.RegressionResultsWrapper):
     """
-    Executa o teste de Shapiro-Wilk para normalidade dos resíduos.
+    Perform the Shapiro-Wilk test for normality of residuals.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+
     Returns:
-        dict: Estatística e p-valor do teste de Shapiro-Wilk.
+        dict: Dictionary containing test statistic and p-value.
     """
     stat, p_value = stats.shapiro(model.resid)
     return {"statistic": stat, "p_value": p_value}
 
 
-def breusch_pagan_test(model):
+def breusch_pagan_test(model: sm.regression.linear_model.RegressionResultsWrapper):
     """
-    Executa o teste de Breusch-Pagan para homocedasticidade.
-    Retorna estatística LM, p-valor LM, estatística F e p-valor F.
+    Perform the Breusch-Pagan test for homoscedasticity.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+
     Returns:
-        dict: lm_stat : float
-                lagrange multiplier statistic
-            - lm_pvalue : float
-                p-value of lagrange multiplier test
-            - f_stat : float
-                f-statistic of the hypothesis that the error variance does not depend on x
-            - f_pvalue : float
-                p-value for the f-statistic
+        dict: Contains:
+            - lm_stat (float): Lagrange multiplier statistic.
+            - lm_pvalue (float): p-value of the Lagrange multiplier test.
+            - f_stat (float): F-statistic for the null hypothesis that error variance does not depend on x.
+            - f_pvalue (float): p-value of the F-statistic.
     """
     lm_stat, lm_pvalue, f_stat, f_pvalue = het_breuschpagan(model.resid, model.model.exog)
     return {
@@ -132,11 +138,13 @@ def breusch_pagan_test(model):
 
 def durbin_watson_test(model: sm.regression.linear_model.RegressionResultsWrapper):
     """
-    Executa o teste de Durbin-Watson para autocorrelação dos resíduos.
+    Perform the Durbin-Watson test for autocorrelation of residuals.
+
     Args:
-        model (sm.regression.linear_model.RegressionResultsWrapper): Modelo ajustado.
+        model (sm.regression.linear_model.RegressionResultsWrapper): Fitted model.
+
     Returns:
-        float: Valor da estatística do teste de Durbin-Watson.
+        float: Durbin-Watson test statistic.
     """
     return durbin_watson(model.resid)
 

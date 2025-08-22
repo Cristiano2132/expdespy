@@ -1,12 +1,12 @@
 import unittest
 import pandas as pd
-from expdespy.models.fatorial_base import FatorialDesign
+from expdespy.models.fatorial_base import FactorialDesign
 
 
-class DummyFatorialDesign(FatorialDesign):
-    """Classe auxiliar para testar FatorialDesign com fórmula no padrão real (C(...))."""
+class DummyFatorialDesign(FactorialDesign):
+    """Classe auxiliar para testar FactorialDesign com fórmula no padrão real (C(...))."""
     def _get_formula(self):
-        # Usa C(...) como no FatorialDesign original
+        # Usa C(...) como no FactorialDesign original
         return f"{self.response} ~ " + "*".join([f"C({f})" for f in self.factors])
 
 

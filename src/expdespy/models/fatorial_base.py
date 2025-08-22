@@ -11,7 +11,22 @@ from expdespy.models.base import ExperimentalDesign
 from expdespy.posthoc import PostHocLoader
 
 
-class FatorialDesign(ExperimentalDesign, ABC):
+class FactorialDesign(ExperimentalDesign, ABC):
+    """
+    Abstract base class for factorial experimental designs.
+
+    This class extends the `ExperimentalDesign` base class to handle
+    factorial structures, providing ANOVA, assumption checking,
+    interaction unfolding, and post hoc testing.
+
+    Attributes:
+        original_factors (List[str]): List of original factor names as provided by the user.
+        data (pd.DataFrame): Experimental dataset (a copy of the original).
+        factors (List[str]): Sanitized list of factor names used in formulas.
+        treatment (str): Statistical treatment formula built from the factors.
+        response (str): Name of the response variable.
+    """
+
     def __init__(self, data, response: str, factors: List[str]):
         self.original_factors = factors
         self.data = data.copy()
@@ -21,10 +36,16 @@ class FatorialDesign(ExperimentalDesign, ABC):
 
     def _safe_factor(self, factor_name: str) -> str:
         """
-        Garante que o nome do fator não entra em conflito com a sintaxe da fórmula do Patsy/statsmodels.
-        Renomeia 'C' para 'C_' e outros nomes problemáticos.
+        Ensures that factor names do not conflict with Patsy/statsmodels formula syntax.
+        For example, renames reserved names like 'C' to 'C_'.
+
+        Args:
+            factor_name (str): The factor column name.
+
+        Returns:
+            str: A safe factor name for statistical modeling.
         """
-        reserved_names = {"C"}  # Adicione mais nomes aqui se necessário
+        reserved_names = {"C"}  # Add more reserved names here if needed
 
         if factor_name in reserved_names and factor_name in self.data.columns:
             new_name = factor_name + "_"
@@ -35,22 +56,30 @@ class FatorialDesign(ExperimentalDesign, ABC):
 
     @abstractmethod
     def _get_formula(self) -> str:
+        """
+        Returns the statistical model formula for the factorial design.
+
+        Must be implemented by subclasses.
+
+        Returns:
+            str: Formula string for ANOVA.
+        """
         pass
 
     def check_assumptions(
         self, alpha: float = 0.05, print_conclusions: bool = True
     ) -> Dict[str, bool]:
         """
-        Verifica os pressupostos da ANOVA para delineamentos fatoriais:
-        - Normalidade dos resíduos (Shapiro-Wilk)
-        - Homocedasticidade entre combinações fatoriais (Levene)
+        Checks ANOVA assumptions for factorial designs:
+        - Normality of residuals (Shapiro-Wilk test)
+        - Homogeneity of variances across factorial combinations (Levene's test)
 
         Args:
-            alpha (float): Nível de significância. Padrão é 0.05.
-            print_conclusions (bool): Se True, imprime as conclusões no terminal.
+            alpha (float, optional): Significance level. Default is 0.05.
+            print_conclusions (bool, optional): If True, prints results.
 
         Returns:
-            Dict[str, bool]: Dicionário com os resultados dos testes.
+            Dict[str, bool]: Results of assumption checks.
         """
         formula = self._get_formula()
         model = smf.ols(formula, data=self.data).fit()
@@ -68,49 +97,46 @@ class FatorialDesign(ExperimentalDesign, ABC):
         if print_conclusions:
             print(
                 f"""
-    Verificação de pressupostos para delineamento fatorial:
-    1. Normalidade dos resíduos (Shapiro-Wilk)
-        - H0: Resíduos são normalmente distribuídos
-        - p-valor: {normality_p:.4f}
-        - Conclusão: H0 {'não rejeitada' if is_normal else 'rejeitada'}
+    Assumption checks for factorial design:
+    1. Normality of residuals (Shapiro-Wilk)
+        - H0: Residuals are normally distributed
+        - p-value: {normality_p:.4f}
+        - Conclusion: H0 {"not rejected" if is_normal else "rejected"}
 
-    2. Homocedasticidade (Levene)
-        - H0: As variâncias são homogêneas entre os grupos
-        - p-valor: {levene_p:.4f}
-        - Conclusão: H0 {'não rejeitada' if is_homoscedastic else 'rejeitada'}
+    2. Homoscedasticity (Levene)
+        - H0: Variances are equal across groups
+        - p-value: {levene_p:.4f}
+        - Conclusion: H0 {"not rejected" if is_homoscedastic else "rejected"}
             """
             )
 
         return {
             "normality (Shapiro-Wilk)": {
-                "H0": "Resíduos são normalmente distribuídos",
-                "H1": "Resíduos não são normalmente distribuídos",
+                "H0": "Residuals are normally distributed",
+                "H1": "Residuals are not normally distributed",
                 "p-value": normality_p,
-                "Conclusion": "H0 não rejeitada" if is_normal else "H0 rejeitada",
+                "Conclusion": "H0 not rejected" if is_normal else "H0 rejected",
             },
             "homoscedasticity (Levene)": {
-                "H0": "As variâncias entre grupos são iguais",
-                "H1": "As variâncias entre grupos são diferentes",
+                "H0": "Group variances are equal",
+                "H1": "Group variances are not equal",
                 "p-value": levene_p,
-                "Conclusion": (
-                    "H0 não rejeitada" if is_homoscedastic else "H0 rejeitada"
-                ),
+                "Conclusion": "H0 not rejected" if is_homoscedastic else "H0 rejected",
             },
         }
 
     def run_anova(self, max_interaction: int = None) -> pd.DataFrame:
         """
-        Executa a ANOVA incluindo apenas interações até um certo nível
-        e adiciona marcadores de significância (*, **, ***, ns).
+        Runs factorial ANOVA, including interactions up to a specified order,
+        and adds significance markers (*, **, ***, ns).
 
         Args:
-            max_interaction (int, opcional): Nível máximo de interação a incluir (1 = principais, 2 = duplas, ...).
-                                            Se None, usa todas as interações possíveis.
+            max_interaction (int, optional): Maximum interaction order to include
+                (1 = main effects, 2 = two-way, ...). If None, all interactions are used.
 
         Returns:
-            pd.DataFrame: Tabela ANOVA com os termos até o nível desejado, incluindo coluna "Signif".
+            pd.DataFrame: ANOVA table with significance markers.
         """
-
         def significance_marker(p):
             if p < 0.001:
                 return "***"
@@ -145,16 +171,16 @@ class FatorialDesign(ExperimentalDesign, ABC):
         max_interaction: int = None,
     ) -> Dict[str, Union[pd.DataFrame, dict]]:
         """
-        Desdobra interações até certo nível e aplica testes post hoc.
+        Unfolds interactions up to a certain order and applies post hoc tests.
 
         Args:
-            alpha (float): Nível de significância.
-            print_results (bool): Se True, imprime os resultados.
-            posthoc (str): Teste post hoc a ser aplicado.
-            max_interaction (int): Nível máximo de interação a explorar.
+            alpha (float, optional): Significance level.
+            print_results (bool, optional): If True, prints the results.
+            posthoc (str, optional): Post hoc test to apply (e.g., "tukey").
+            max_interaction (int, optional): Maximum interaction order to explore.
 
         Returns:
-            dict: Resultados da ANOVA e dos testes post hoc.
+            dict: ANOVA results and post hoc test outputs.
         """
         anova_table = self.run_anova(max_interaction=max_interaction)
         result = {
@@ -172,7 +198,7 @@ class FatorialDesign(ExperimentalDesign, ABC):
         if not significant_interactions:
             if print_results:
                 print(
-                    "Sem interações significativas. Aplicando testes post hoc nos efeitos principais."
+                    "No significant interactions. Applying post hoc tests on main effects."
                 )
             for factor in self.factors:
                 try:
@@ -180,22 +206,20 @@ class FatorialDesign(ExperimentalDesign, ABC):
                         test_name=posthoc,
                         data=self.data,
                         values_column=self.response,
-                        trats_column=factor,
+                        treatments_column=factor,
                         alpha=alpha,
                     )
                     output = test.run_compact_letters_display()
                     result["main_effects"][factor] = output
                     if print_results:
-                        print(f"\nPost hoc ({posthoc}) para {factor}")
+                        print(f"\nPost hoc ({posthoc}) for {factor}")
                         print(output)
                 except Exception as e:
                     if print_results:
-                        print(f"Erro ao aplicar post hoc ({posthoc}) em {factor}: {e}")
+                        print(f"Error applying post hoc ({posthoc}) to {factor}: {e}")
         else:
             if print_results:
-                print(
-                    "Interações significativas encontradas. Realizando desdobramentos."
-                )
+                print("Significant interactions found. Performing unfolding.")
             for term in significant_interactions:
                 factors = [f.split("(")[1].strip(")") for f in term.split(":")]
                 for f1 in factors:
@@ -215,41 +239,39 @@ class FatorialDesign(ExperimentalDesign, ABC):
                                     test_name=posthoc,
                                     data=subset,
                                     values_column=self.response,
-                                    trats_column=f1,
+                                    treatments_column=f1,
                                     alpha=alpha,
                                 )
                                 posthoc_result = (
                                     test_posthoc.run_compact_letters_display()
                                 )
 
-                                key = f"{f1} dentro de {f2}={level}"
+                                key = f"{f1} within {f2}={level}"
                                 result["interactions"][key] = {
                                     "anova": anova_sub,
                                     "posthoc": posthoc_result,
                                 }
 
                                 if print_results:
-                                    print(f"\nDesdobramento: {key}")
+                                    print(f"\nUnfolding: {key}")
                                     print(anova_sub)
                                     print(posthoc_result)
                             except Exception as e:
                                 if print_results:
-                                    print(
-                                        f"Erro ao desdobrar {f1} dentro de {f2}={level}: {e}"
-                                    )
+                                    print(f"Error unfolding {f1} within {f2}={level}: {e}")
 
         return result
 
     @staticmethod
     def display_unfolded_interactions(results: dict):
         """
-        Exibe de forma organizada os resultados do desdobramento de interações.
+        Displays unfolded interaction results in an organized format.
 
         Args:
-            results (dict): Saída da função `unfold_interactions`.
+            results (dict): Output from the `unfold_interactions` method.
         """
         print("\n" + "=" * 50)
-        print("📊 ANOVA PRINCIPAL")
+        print("📊 MAIN ANOVA")
         print("=" * 50)
         try:
             print(
@@ -260,26 +282,26 @@ class FatorialDesign(ExperimentalDesign, ABC):
 
         if results.get("main_effects"):
             print("\n" + "=" * 50)
-            print("🧪 EFEITOS PRINCIPAIS - Post Hoc")
+            print("🧪 MAIN EFFECTS - Post Hoc")
             print("=" * 50)
-            for fator, letras in results["main_effects"].items():
-                print(f"\n🔹 Fator: {fator}")
-                print(letras)
+            for factor, letters in results["main_effects"].items():
+                print(f"\n🔹 Factor: {factor}")
+                print(letters)
 
         if results.get("interactions"):
             print("\n" + "=" * 50)
-            print("🔬 DESDOBRAMENTOS DE INTERAÇÕES SIGNIFICATIVAS")
+            print("🔬 SIGNIFICANT INTERACTIONS - Unfolding")
             print("=" * 50)
-            for label, blocos in results["interactions"].items():
+            for label, blocks in results["interactions"].items():
                 print(f"\n🧩 {label}")
                 print("- ANOVA:")
                 try:
                     print(
                         tabulate(
-                            blocos["anova"].round(4), headers="keys", tablefmt="github"
+                            blocks["anova"].round(4), headers="keys", tablefmt="github"
                         )
                     )
                 except:
-                    print(blocos["anova"])
+                    print(blocks["anova"])
                 print("\n- Post hoc:")
-                print(blocos["posthoc"])
+                print(blocks["posthoc"])

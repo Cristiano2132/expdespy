@@ -5,7 +5,7 @@ import pandas as pd
 
 def load_dic_milho() -> tuple[pd.DataFrame, str]:
     """
-    Exemplo clássico de DIC (Delineamento Inteiramente Casualizado) com 4 variedades de milho
+    Exemplo clássico de CRD (Delineamento Inteiramente Casualizado) com 4 variedades de milho
     e 5 repetições. A variável resposta é a produtividade (em sacas/ha).
     """
     data = {
@@ -21,7 +21,7 @@ def load_dic_milho() -> tuple[pd.DataFrame, str]:
     des = (
         "Experimento com 4 variedades de milho (A, B, C, D) distribuídas aleatoriamente "
         "em 20 parcelas (5 por variedade). A variável resposta é a produtividade em sacas por hectare. "
-        "Usado para análise com DIC e testes de comparação múltipla."
+        "Usado para análise com CRD e testes de comparação múltipla."
     )
     descricao = {
         'description': des,

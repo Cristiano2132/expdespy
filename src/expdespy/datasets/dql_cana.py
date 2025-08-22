@@ -4,7 +4,7 @@ import pandas as pd
 
 def load_dql_cana() -> pd.DataFrame:
     """
-    Dados de um experimento em Quadrado Latino (DQL) com 5 variedades de cana forrageira.
+    Dados de um experimento em Quadrado Latino (LSD) com 5 variedades de cana forrageira.
 
     Retorna:
         DataFrame com colunas: 'linha', 'coluna', 'tratamento', 'resposta'
@@ -18,7 +18,7 @@ def load_dql_cana() -> pd.DataFrame:
     ]
 
     df = pd.DataFrame(data, columns=["linha", "coluna", "tratamento", "resposta"])
-    desc = "Experimento em Quadrado Latino (DQL) com 5 variedades de cana forrageira."
+    desc = "Experimento em Quadrado Latino (LSD) com 5 variedades de cana forrageira."
     description = {'description': desc,
                 'source': "Fictício",
                 'response': "resposta",
