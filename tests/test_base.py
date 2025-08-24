@@ -29,7 +29,7 @@ class TestExperimentalDesign(unittest.TestCase):
 
     def test_anova_returns_dataframe_with_significance(self):
         # Act
-        anova_table = self.design.anova()
+        anova_table = self.design.run_anova()
 
         # Assert
         self.assertIsInstance(anova_table, pd.DataFrame)
@@ -60,7 +60,7 @@ class TestExperimentalDesign(unittest.TestCase):
             ])
         })
         design = DummyDesign(data, response="y", treatment="trat")
-        anova_table = design.anova()
+        anova_table = design.run_anova()
 
         # Como a diferença é muito grande, o p-value deve ser muito pequeno
         p_val = anova_table.loc["C(trat)", "PR(>F)"]

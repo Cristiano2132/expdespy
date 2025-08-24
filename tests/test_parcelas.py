@@ -15,7 +15,7 @@ class TestSplitPlotCRD(unittest.TestCase):
         )
 
     def test_anova_returns_dataframe(self):
-        result = self.model.anova()
+        result = self.model.run_anova()
         self.assertIsInstance(result, pd.DataFrame)
         for col in ['PR(>F)', 'F']:
             self.assertIn(col, result.columns)
@@ -39,7 +39,7 @@ class TestSplitPlotRCBD(unittest.TestCase):
         )
 
     def test_anova_returns_dataframe(self):
-        result = self.model.anova()
+        result = self.model.run_anova()
         self.assertIsInstance(result, pd.DataFrame)
         for col in ['PR(>F)', 'F']:
             self.assertIn(col, result.columns)

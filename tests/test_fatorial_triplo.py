@@ -30,7 +30,7 @@ class TestFatorialTriploDIC(unittest.TestCase):
         self.model = FactorialCRD(data=self.df, response=self.response, factors=self.factors)
 
     def test_anova_returns_dataframe(self):
-        result = self.model.anova()
+        result = self.model.run_anova()
         interaction = f"C(f1):C(f2):C(f3)"
         self.assertIn(interaction, result.index)
         self.assertIsInstance(result, pd.DataFrame)

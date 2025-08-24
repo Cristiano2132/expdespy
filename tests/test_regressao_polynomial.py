@@ -18,7 +18,7 @@ class TestPolynomialRegression(unittest.TestCase):
         self.poly = PolynomialRegression(
             data=self.df,
             response="yield",
-            treatment="dose"
+            factor="dose"
         )
 
     def test_fit_degree_2_returns_results(self):

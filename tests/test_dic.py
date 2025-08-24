@@ -16,7 +16,7 @@ class TestDIC(unittest.TestCase):
         f_calc_expected = 7.79
 
         # Act
-        result = self.dic.anova()
+        result = self.dic.run_anova()
         f_calc = float(result.loc["C(variedade)", "F"])
 
         # Assert

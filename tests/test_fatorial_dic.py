@@ -43,7 +43,7 @@ class TestFactorialCRD(unittest.TestCase):
 
     def test_anova_returns_dataframe(self):
         # Act
-        result = self.model.anova()
+        result = self.model.run_anova()
         f_calc_axb = float(result.loc["C(f1):C(f2)", "F"])
         f_calc_axb_esperado = 4.95
         # Assert

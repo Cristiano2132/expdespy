@@ -19,7 +19,7 @@ class TestDBC(unittest.TestCase):
         # Arrange
         f_calc_expected = 33.58
         # Act
-        result = self.dbc.anova()
+        result = self.dbc.run_anova()
         f_calc = float(result.loc["C(produto)", "F"])
 
         # Assert

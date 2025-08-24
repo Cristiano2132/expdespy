@@ -19,7 +19,7 @@ class TestExperimentalDesign(unittest.TestCase):
         self.model = DummyDesign(data=self.df, response="resposta", treatment="tratamento")
 
     def test_anova_runs(self):
-        anova_table = self.model.anova()
+        anova_table = self.model.run_anova()
         self.assertIn("PR(>F)", anova_table.columns)
         self.assertIn("Signif", anova_table.columns)
         self.assertTrue(len(anova_table) > 0)

@@ -8,10 +8,10 @@ class PolynomialRegression:
     """
     Fits polynomial models for quantitative treatments.
     """
-    def __init__(self, data: pd.DataFrame, response: str, treatment: str):
+    def __init__(self, data: pd.DataFrame, response: str, factor: str):
         self.data = data.copy()
         self.response = response
-        self.treatment = treatment
+        self.factor = factor
         self.model = None
         self.results = None
 
@@ -30,10 +30,10 @@ class PolynomialRegression:
 
         # Create polynomial terms
         for d in range(2, degree + 1):
-            self.data[f"{self.treatment}^{d}"] = self.data[self.treatment] ** d
+            self.data[f"{self.factor}^{d}"] = self.data[self.factor] ** d
 
         # Create model formula
-        predictors = [f"Q('{self.treatment}')" ] + [f"Q('{self.treatment}^{d}')" for d in range(2, degree + 1)]
+        predictors = [f"Q('{self.factor}')" ] + [f"Q('{self.factor}^{d}')" for d in range(2, degree + 1)]
         formula = f"Q('{self.response}') ~ {' + '.join(predictors)}"
 
         # Fit model
@@ -68,21 +68,21 @@ class PolynomialRegression:
             raise ValueError("Model not fitted. Use .fit() first.")
 
         # Generate values for prediction
-        x_vals = np.linspace(self.data[self.treatment].min(),
-                            self.data[self.treatment].max(), 100)
-        X_pred = pd.DataFrame({self.treatment: x_vals})
+        x_vals = np.linspace(self.data[self.factor].min(),
+                            self.data[self.factor].max(), 100)
+        X_pred = pd.DataFrame({self.factor: x_vals})
 
         # Add polynomial terms
         for d in range(2, len(self.results.params)):
-            X_pred[f"{self.treatment}^{d}"] = X_pred[self.treatment] ** d
+            X_pred[f"{self.factor}^{d}"] = X_pred[self.factor] ** d
 
         # Predict values
         y_pred = self.results.predict(X_pred)
 
         # Plot observed data and fitted curve
-        ax.scatter(self.data[self.treatment], self.data[self.response], color="blue", label="Data")
+        ax.scatter(self.data[self.factor], self.data[self.response], color="blue", label="Data")
         ax.plot(x_vals, y_pred, color="red", label=f"Polynomial fit (degree {len(self.results.params)-1})")
-        ax.set_xlabel(self.treatment)
+        ax.set_xlabel(self.factor)
         ax.set_ylabel(self.response)
         ax.legend()
         return ax
@@ -96,7 +96,7 @@ class PolynomialRegression:
 #     })
 
 #     # Fit quadratic model
-#     reg = PolynomialRegression(df, response="yield", treatment="dose")
+#     reg = PolynomialRegression(df, response="yield", factor="dose")
 #     results = reg.fit(degree=2)
 
 #     # ANOVA

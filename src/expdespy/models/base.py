@@ -45,7 +45,7 @@ class ExperimentalDesign(ABC):
         """
         pass
 
-    def anova(self) -> pd.DataFrame:
+    def run_anova(self) -> pd.DataFrame:
         """
         Performs Analysis of Variance (ANOVA) using the formula
         defined by the `_get_formula` method.

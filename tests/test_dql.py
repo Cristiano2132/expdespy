@@ -18,7 +18,7 @@ class TestDQL(unittest.TestCase):
         # Arrange
         f_calc_expected = 12.09 
         # Act
-        result = self.dql.anova()
+        result = self.dql.run_anova()
         f_calc = float(result.loc["C(tratamento)", "F"])
 
         # Assert

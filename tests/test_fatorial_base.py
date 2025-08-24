@@ -43,7 +43,7 @@ class TestFatorialDesign(unittest.TestCase):
         self.assertEqual(self.model._get_formula(), expected_formula)
 
     def test_anova_returns_dataframe(self):
-        result = self.model.anova()
+        result = self.model.run_anova()
         self.assertIsInstance(result, pd.DataFrame)
         self.assertIn("PR(>F)", result.columns)
 
