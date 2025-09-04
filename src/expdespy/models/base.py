@@ -101,7 +101,16 @@ class ExperimentalDesign(ABC):
             factor_names = re.findall(r"C\((\w+)\)", formula)
             if not factor_names:
                 factor_names = [self.treatment]
+<<<<<<< Updated upstream
 
+<<<<<<< HEAD
+=======
+            # Agrupar pelos fatores para o teste de Levene
+=======
+            else:
+                factor_names = factor_names[0]
+>>>>>>> Stashed changes
+>>>>>>> develop
             groups = [
                 group[self.response].values
                 for _, group in self.data.groupby(factor_names)
