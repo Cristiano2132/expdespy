@@ -105,8 +105,13 @@ class ExperimentalDesign(ABC):
 
             if not factor_names:
                 factor_names = [self.treatment]
+<<<<<<< Updated upstream
 
             # Agrupar pelos fatores para o teste de Levene
+=======
+            else:
+                factor_names = factor_names[0]
+>>>>>>> Stashed changes
             groups = [
                 group[self.response].values
                 for _, group in self.data.groupby(factor_names)

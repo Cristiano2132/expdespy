@@ -21,7 +21,7 @@ pip install .
 ## 🚀 Exemplo de Uso
 ## Exemplo de uso
 
-Veja os exemplos completos no [notebook de demonstração](https://github.com/Cristiano2132/expdespy/blob/main/examples/expdespy_example.ipynb)
+Veja os exemplos completos no [notebook de demonstração](https://github.com/Cristiano2132/expdespy/blob/main/examples/ExpDesPy_Tutorial_English_Complete.ipynb)
 
 ```python
 from expdespy import DIC
