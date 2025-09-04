@@ -60,13 +60,6 @@ class PostHocTest(ABC):
         final_result.sort_values(by='Mean', ascending=False, inplace=True)
         return final_result
 
-<<<<<<< Updated upstream
-    def plot_compact_letters_display(self,
-                                    ax: Optional[plt.Axes] = None,
-                                    points_color: str = 'red') -> None:
-        """
-        Plota um gráfico de boxplot com letras compactas do teste post hoc.
-=======
     def plot_compact_letters_display(
         self, ax: Optional[plt.Axes] = None, points_color: str = None, hue: str = None, palette: str = "Blues", order_by: str = None
     ) -> None:
@@ -80,7 +73,6 @@ class PostHocTest(ABC):
             hue (str, optional): Column name for hue grouping in the boxplot. Default is None.
             palette (str, optional): Color palette for the boxplot. Default is "Blues".
             order_by (str, optional): Column name to order treatments by. Default is None. If None, treatments are ordered by mean values.
->>>>>>> Stashed changes
         """
         cld_result = self.run_compact_letters_display()
         sns.set_style("whitegrid")
@@ -90,46 +82,15 @@ class PostHocTest(ABC):
             .rename(columns={'mean': 'Mean', 'max': 'Max'})
             .reset_index()
         )
-<<<<<<< Updated upstream
-        cld_plot_df = cld_result.merge(group_stats, on=self.trats_column)
-        ordered_groups = cld_plot_df[self.trats_column].tolist()
-=======
         cld_plot_df = cld_result.merge(group_stats, on=self.treatments_column)
         if order_by is not None and order_by in cld_plot_df.columns:
             ordered_groups = cld_plot_df.sort_values(by=order_by, ascending=True)[self.treatments_column].tolist()
         else:
             ordered_groups = cld_plot_df.sort_values(by="Mean", ascending=True)[self.treatments_column].tolist()
->>>>>>> Stashed changes
 
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 5))
 
-<<<<<<< Updated upstream
-        palette_blues = sns.color_palette(
-            "Blues", n_colors=len(ordered_groups))
-
-        sns.boxplot(
-            data=self.data,
-            x=self.trats_column,
-            y=self.values_column,
-            order=ordered_groups,
-            palette=palette_blues,
-            ax=ax,
-            hue=self.trats_column,
-            legend=False
-        )
-
-        sns.stripplot(
-            data=self.data,
-            x=self.trats_column,
-            y=self.values_column,
-            order=ordered_groups,
-            dodge=True,
-            color=points_color,
-            size=5,
-            ax=ax
-        )
-=======
         if hue is not None and hue in self.data.columns:
             sns.boxplot(
                 data=self.data,
@@ -163,7 +124,6 @@ class PostHocTest(ABC):
                 size=5,
                 ax=ax,
             )
->>>>>>> Stashed changes
 
         for i, row in cld_plot_df.iterrows():
             ax.text(
