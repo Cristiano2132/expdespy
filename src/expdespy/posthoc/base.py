@@ -114,14 +114,13 @@ class PostHocTest(ABC):
         group_stats = (
             self.data.groupby(self.treatments_column)[self.values_column]
             .agg(["mean", "max"])
-            .rename(columns={"mean": "Mean", "max": "Max"})
             .reset_index()
         )
         cld_plot_df = cld_result.merge(group_stats, on=self.treatments_column)
         if order_by is not None and order_by in cld_plot_df.columns:
             ordered_groups = cld_plot_df.sort_values(by=order_by, ascending=True)[self.treatments_column].tolist()
         else:
-            ordered_groups = cld_plot_df.sort_values(by="Mean", ascending=True)[self.treatments_column].tolist()
+            ordered_groups = cld_plot_df.sort_values(by="mean", ascending=True)[self.treatments_column].tolist()
 
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 5))
@@ -163,7 +162,7 @@ class PostHocTest(ABC):
         for i, row in cld_plot_df.iterrows():
             ax.text(
                 x=i,
-                y=row["Max"] + 0.1,
+                y=row["max"] + 0.1,
                 s=row["Letters"],
                 ha="center",
                 va="bottom",
