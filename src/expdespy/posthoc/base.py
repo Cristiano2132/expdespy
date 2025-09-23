@@ -13,7 +13,7 @@ class PostHocTest(ABC):
     """
     Abstract base class for post hoc tests.
 
-    This class defines the general structure for running post hoc tests
+    Defines the general structure for running post hoc tests
     and displaying results with compact letter displays (CLD).
     """
 
@@ -24,15 +24,6 @@ class PostHocTest(ABC):
         treatments_column: str,
         alpha: float = 0.05,
     ) -> None:
-        """
-        Initialize a PostHocTest instance.
-
-        Args:
-            data (pd.DataFrame): Experimental dataset.
-            values_column (str): Column containing response variable values.
-            treatments_column (str): Column containing treatment labels.
-            alpha (float, optional): Significance level for tests. Default is 0.05.
-        """
         self.data = data
         self.values_column = values_column
         self.treatments_column = treatments_column
@@ -66,9 +57,6 @@ class PostHocTest(ABC):
 
         The method calculates treatment means and assigns significance
         letters based on pairwise comparisons.
-
-        Returns:
-            pd.DataFrame: A DataFrame with treatment means and assigned letters.
         """
         df_posthoc = self.run()
 
@@ -96,34 +84,37 @@ class PostHocTest(ABC):
         return final_result
 
     def plot_compact_letters_display(
-        self, ax: Optional[plt.Axes] = None, points_color: str = None, hue: str = None, palette: str = "Blues", order_by: str = None
+        self,
+        ax: Optional[plt.Axes] = None,
+        points_color: Optional[str] = None,
+        hue: Optional[str] = None,
+        palette: str = "Blues",
+        order_by: Optional[str] = None,
     ) -> None:
         """
         Plot a boxplot with compact letter display (CLD).
-
-        Args:
-            ax (matplotlib.axes.Axes, optional): Axis object to draw the plot on.
-                                                If None, a new figure is created.
-            points_color (str, optional): Color for individual data points. Default is None. If None, will not plot points.
-            hue (str, optional): Column name for hue grouping in the boxplot. Default is None.
-            palette (str, optional): Color palette for the boxplot. Default is "Blues".
-            order_by (str, optional): Column name to order treatments by. Default is None. If None, treatments are ordered by mean values.
         """
         cld_result = self.run_compact_letters_display()
         sns.set_style("whitegrid")
+
         group_stats = (
             self.data.groupby(self.treatments_column)[self.values_column]
             .agg(["mean", "max"])
             .reset_index()
         )
         cld_plot_df = cld_result.merge(group_stats, on=self.treatments_column)
+
         if order_by is not None and order_by in cld_plot_df.columns:
-            ordered_groups = cld_plot_df.sort_values(by=order_by, ascending=True)[self.treatments_column].tolist()
+            ordered_groups = cld_plot_df.sort_values(by=order_by, ascending=True)[
+                self.treatments_column
+            ].tolist()
         else:
-            ordered_groups = cld_plot_df.sort_values(by="mean", ascending=True)[self.treatments_column].tolist()
+            ordered_groups = cld_plot_df.sort_values(by="mean", ascending=True)[
+                self.treatments_column
+            ].tolist()
 
         if ax is None:
-            fig, ax = plt.subplots(figsize=(8, 5))
+            _, ax = plt.subplots(figsize=(8, 5))
 
         if hue is not None and hue in self.data.columns:
             sns.boxplot(
@@ -147,6 +138,7 @@ class PostHocTest(ABC):
                 hue=self.treatments_column,
                 legend=False,
             )
+
         if points_color is not None:
             sns.stripplot(
                 data=self.data,

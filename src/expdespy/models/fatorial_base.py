@@ -8,7 +8,7 @@ import statsmodels.formula.api as smf
 from statsmodels.stats.anova import anova_lm
 from tabulate import tabulate
 from expdespy.models.base import ExperimentalDesign
-from expdespy.posthoc import PostHocLoader
+from expdespy.posthoc.posthoc_loader import PostHocLoader
 
 
 class FactorialDesign(ExperimentalDesign, ABC):
